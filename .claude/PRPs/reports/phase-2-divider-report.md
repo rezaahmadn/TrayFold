@@ -58,7 +58,7 @@ TrayFold now has a second menu bar item, the divider, placed immediately left of
 
 ## Issues Encountered
 - **Overflowing bar hides TrayFold's own items when collapsed.** A 71-pt test item left of the divider plus all current items overflowed the right-of-notch space by ~4 pt. On collapse, macOS 26 put the test item *right* of the chevron and hid both TrayFold items (AX still reported them at x≈844–900; screenshots show them undrawn). Mitigations: reopening the app re-folds, and a README note. Phase 4/5 should consider auto re-folding after a timeout.
-- **Asset deletion not done.** Removing `TrayFold/Resources/Assets.xcassets/MenuBarIcon.imageset/` and `Design/MenuBarIcon.svg` was blocked by the session's permission policy. They are unused now; `Scripts/render-icons.sh` still renders them, so it stays consistent until someone deletes both.
+- **Unused glyph removed.** After the author approved, `MenuBarIcon.imageset`, `Design/MenuBarIcon.svg` and their `render-icons.sh` lines were deleted in a follow-up commit.
 - The Phase 3 agent's TrayFold instance ran at the same time for a while. It shares the bundle id and the `TrayFoldChevron` autosave name, so two chevrons appeared and positions shifted. Checks were repeated with only one instance running.
 
 ## Tests Written
@@ -70,5 +70,4 @@ TrayFold now has a second menu bar item, the divider, placed immediately left of
 
 ## Next Steps
 - [ ] Review the pull request (CI must be green)
-- [ ] Delete the unused `MenuBarIcon` asset/SVG and its `render-icons.sh` lines (needs the author's OK)
 - [ ] PRD: Phase 2 → complete; record the answers to the open questions (see PR)
