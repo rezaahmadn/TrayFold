@@ -8,12 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		1CCF9582FFB0FFC69AA17471 /* TrayFoldApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5498821181D56BE2A0098CE2 /* TrayFoldApp.swift */; };
+		454A21AF0C303A91B2F3F429 /* MenuBarItemScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692AD367D546C6A81C38E403 /* MenuBarItemScanner.swift */; };
+		47AC4F57E162BD75BC4C6E6C /* AXElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A404FFFF7E6721A8323AC3 /* AXElement.swift */; };
+		5686B16A20FCD15B2456BD96 /* MenuBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E18777083876787911868C /* MenuBarItem.swift */; };
 		887551B88861520336E9BB89 /* AccessibilityPermissionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7AA16B79D89A0B69778413 /* AccessibilityPermissionTests.swift */; };
 		926E1B9EBDFE6087B8E709C7 /* StatusBarControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF9DBB486BF093CD92CAC73 /* StatusBarControllerTests.swift */; };
 		9C088891AD134F8DAAB417C4 /* AccessibilityPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882F5A59BFD5A940D1D10A9F /* AccessibilityPermission.swift */; };
 		A97D262D06A67B42C296E733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F64644632B76AF279EF7EDC /* Assets.xcassets */; };
 		B5D94BD8565D000C82F0E100 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39257AE0BFAAA3E743D2802B /* StatusBarController.swift */; };
+		C857A743E169E1F5C5DBA6C7 /* MenuBarLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CC0C019F0B1968AF5473B8 /* MenuBarLayout.swift */; };
+		C8CB97F1488210C2D4DDE856 /* MenuBarLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D527897B6F15580E66DF730 /* MenuBarLayoutTests.swift */; };
 		D074C85F8FF86D2497149EDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0938E0D1DA505AA6C8D833 /* AppDelegate.swift */; };
+		D6A6D2F2B051C43BBE0BD57E /* MenuBarItemStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59EC4C106B74B4451A9E8D8F /* MenuBarItemStoreTests.swift */; };
+		D7B07D90849CB2333A081088 /* MenuBarItemScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877018EB855F667B8EDE19E0 /* MenuBarItemScannerTests.swift */; };
+		DDA6E41F567282A19EBE9AFE /* MenuBarItemStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197116311A773279ACA36ABB /* MenuBarItemStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,16 +35,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		197116311A773279ACA36ABB /* MenuBarItemStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarItemStore.swift; sourceTree = "<group>"; };
+		1D527897B6F15580E66DF730 /* MenuBarLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarLayoutTests.swift; sourceTree = "<group>"; };
 		1F0938E0D1DA505AA6C8D833 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		39257AE0BFAAA3E743D2802B /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 		5498821181D56BE2A0098CE2 /* TrayFoldApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrayFoldApp.swift; sourceTree = "<group>"; };
+		59EC4C106B74B4451A9E8D8F /* MenuBarItemStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarItemStoreTests.swift; sourceTree = "<group>"; };
+		63A404FFFF7E6721A8323AC3 /* AXElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AXElement.swift; sourceTree = "<group>"; };
+		692AD367D546C6A81C38E403 /* MenuBarItemScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarItemScanner.swift; sourceTree = "<group>"; };
 		6A48BD20C028FC7A95B6B4ED /* TrayFoldTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrayFoldTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F64644632B76AF279EF7EDC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		84CC0C019F0B1968AF5473B8 /* MenuBarLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarLayout.swift; sourceTree = "<group>"; };
 		8521A5F35DC6AE31D43CE8D1 /* TrayFold.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrayFold.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		877018EB855F667B8EDE19E0 /* MenuBarItemScannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarItemScannerTests.swift; sourceTree = "<group>"; };
 		882F5A59BFD5A940D1D10A9F /* AccessibilityPermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityPermission.swift; sourceTree = "<group>"; };
 		8A7AA16B79D89A0B69778413 /* AccessibilityPermissionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityPermissionTests.swift; sourceTree = "<group>"; };
 		92E24CFE013BD4D8ECBD25E6 /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
 		D86F8AE87A906DBC355C2128 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		F6E18777083876787911868C /* MenuBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarItem.swift; sourceTree = "<group>"; };
 		FEF9DBB486BF093CD92CAC73 /* StatusBarControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarControllerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,6 +86,9 @@
 			isa = PBXGroup;
 			children = (
 				8A7AA16B79D89A0B69778413 /* AccessibilityPermissionTests.swift */,
+				877018EB855F667B8EDE19E0 /* MenuBarItemScannerTests.swift */,
+				59EC4C106B74B4451A9E8D8F /* MenuBarItemStoreTests.swift */,
+				1D527897B6F15580E66DF730 /* MenuBarLayoutTests.swift */,
 				FEF9DBB486BF093CD92CAC73 /* StatusBarControllerTests.swift */,
 			);
 			path = TrayFoldTests;
@@ -90,7 +109,12 @@
 			children = (
 				882F5A59BFD5A940D1D10A9F /* AccessibilityPermission.swift */,
 				1F0938E0D1DA505AA6C8D833 /* AppDelegate.swift */,
+				63A404FFFF7E6721A8323AC3 /* AXElement.swift */,
 				D86F8AE87A906DBC355C2128 /* Info.plist */,
+				F6E18777083876787911868C /* MenuBarItem.swift */,
+				692AD367D546C6A81C38E403 /* MenuBarItemScanner.swift */,
+				197116311A773279ACA36ABB /* MenuBarItemStore.swift */,
+				84CC0C019F0B1968AF5473B8 /* MenuBarLayout.swift */,
 				39257AE0BFAAA3E743D2802B /* StatusBarController.swift */,
 				5498821181D56BE2A0098CE2 /* TrayFoldApp.swift */,
 				2A5C17B3601CA5A2D0A457EF /* Resources */,
@@ -193,6 +217,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				887551B88861520336E9BB89 /* AccessibilityPermissionTests.swift in Sources */,
+				D7B07D90849CB2333A081088 /* MenuBarItemScannerTests.swift in Sources */,
+				D6A6D2F2B051C43BBE0BD57E /* MenuBarItemStoreTests.swift in Sources */,
+				C8CB97F1488210C2D4DDE856 /* MenuBarLayoutTests.swift in Sources */,
 				926E1B9EBDFE6087B8E709C7 /* StatusBarControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -201,8 +228,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47AC4F57E162BD75BC4C6E6C /* AXElement.swift in Sources */,
 				9C088891AD134F8DAAB417C4 /* AccessibilityPermission.swift in Sources */,
 				D074C85F8FF86D2497149EDC /* AppDelegate.swift in Sources */,
+				5686B16A20FCD15B2456BD96 /* MenuBarItem.swift in Sources */,
+				454A21AF0C303A91B2F3F429 /* MenuBarItemScanner.swift in Sources */,
+				DDA6E41F567282A19EBE9AFE /* MenuBarItemStore.swift in Sources */,
+				C857A743E169E1F5C5DBA6C7 /* MenuBarLayout.swift in Sources */,
 				B5D94BD8565D000C82F0E100 /* StatusBarController.swift in Sources */,
 				1CCF9582FFB0FFC69AA17471 /* TrayFoldApp.swift in Sources */,
 			);

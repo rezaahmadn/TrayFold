@@ -9,6 +9,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     // Kept alive for the app's lifetime; releasing them would remove the menu bar item.
     private var permission: AccessibilityPermission?
     private var statusBar: StatusBarController?
+    private var menuBarItems: MenuBarItemStore?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Unit tests run inside this app; skip the menu bar item and permission prompt there.
@@ -23,5 +24,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         statusBar = StatusBarController(permission: permission)
         self.permission = permission
+
+        let menuBarItems = MenuBarItemStore()
+        menuBarItems.onChange = { items in
+            Self.logger.notice("Menu bar items: \(MenuBarItemStore.summary(items), privacy: .public)")
+        }
+        menuBarItems.start()
+        self.menuBarItems = menuBarItems
     }
 }
