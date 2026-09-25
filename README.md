@@ -2,7 +2,7 @@
 
 A Windows-style system tray for the macOS menu bar, built for MacBooks with a notch.
 
-> **Status: early development.** Phase 1 (project skeleton) done; nothing is hidden yet. The product spec lives in [`.claude/PRPs/prds/trayfold.prd.md`](.claude/PRPs/prds/trayfold.prd.md).
+> **Status: early development.** The divider works: icons you ⌘-drag to its left are folded away. The tray popup is not built yet. The product spec lives in [`.claude/PRPs/prds/trayfold.prd.md`](.claude/PRPs/prds/trayfold.prd.md).
 
 ## The problem
 
@@ -39,6 +39,8 @@ Scripts/run.sh          # or: open TrayFold.xcodeproj, then Cmd+R
 ```
 
 On first launch, allow TrayFold in **System Settings → Privacy & Security → Accessibility**.
+
+To choose what to hide: click the TrayFold chevron (⌄) → **Show Hidden Icons**, ⌘-drag icons to the left of the thin divider line, then **Hide Icons**. If the chevron ever goes missing on a crowded bar, open TrayFold again (e.g. from Spotlight) to fold everything back.
 
 ### Keep the permission across rebuilds (optional, recommended for development)
 

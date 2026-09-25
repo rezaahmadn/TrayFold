@@ -8,12 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		1CCF9582FFB0FFC69AA17471 /* TrayFoldApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5498821181D56BE2A0098CE2 /* TrayFoldApp.swift */; };
+		59709E09EF6E28E121996404 /* DividerControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202B0ED8A018268DD932DED5 /* DividerControllerTests.swift */; };
 		887551B88861520336E9BB89 /* AccessibilityPermissionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7AA16B79D89A0B69778413 /* AccessibilityPermissionTests.swift */; };
 		926E1B9EBDFE6087B8E709C7 /* StatusBarControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF9DBB486BF093CD92CAC73 /* StatusBarControllerTests.swift */; };
 		9C088891AD134F8DAAB417C4 /* AccessibilityPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882F5A59BFD5A940D1D10A9F /* AccessibilityPermission.swift */; };
 		A97D262D06A67B42C296E733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F64644632B76AF279EF7EDC /* Assets.xcassets */; };
 		B5D94BD8565D000C82F0E100 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39257AE0BFAAA3E743D2802B /* StatusBarController.swift */; };
 		D074C85F8FF86D2497149EDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0938E0D1DA505AA6C8D833 /* AppDelegate.swift */; };
+		E544A4D1E93670F6A943C3D0 /* DividerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBC042F6D1EE16CBAAB5038 /* DividerController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +30,7 @@
 
 /* Begin PBXFileReference section */
 		1F0938E0D1DA505AA6C8D833 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		202B0ED8A018268DD932DED5 /* DividerControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerControllerTests.swift; sourceTree = "<group>"; };
 		39257AE0BFAAA3E743D2802B /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 		5498821181D56BE2A0098CE2 /* TrayFoldApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrayFoldApp.swift; sourceTree = "<group>"; };
 		6A48BD20C028FC7A95B6B4ED /* TrayFoldTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrayFoldTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -36,6 +39,7 @@
 		882F5A59BFD5A940D1D10A9F /* AccessibilityPermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityPermission.swift; sourceTree = "<group>"; };
 		8A7AA16B79D89A0B69778413 /* AccessibilityPermissionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityPermissionTests.swift; sourceTree = "<group>"; };
 		92E24CFE013BD4D8ECBD25E6 /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
+		9CBC042F6D1EE16CBAAB5038 /* DividerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerController.swift; sourceTree = "<group>"; };
 		D86F8AE87A906DBC355C2128 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FEF9DBB486BF093CD92CAC73 /* StatusBarControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarControllerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				8A7AA16B79D89A0B69778413 /* AccessibilityPermissionTests.swift */,
+				202B0ED8A018268DD932DED5 /* DividerControllerTests.swift */,
 				FEF9DBB486BF093CD92CAC73 /* StatusBarControllerTests.swift */,
 			);
 			path = TrayFoldTests;
@@ -90,6 +95,7 @@
 			children = (
 				882F5A59BFD5A940D1D10A9F /* AccessibilityPermission.swift */,
 				1F0938E0D1DA505AA6C8D833 /* AppDelegate.swift */,
+				9CBC042F6D1EE16CBAAB5038 /* DividerController.swift */,
 				D86F8AE87A906DBC355C2128 /* Info.plist */,
 				39257AE0BFAAA3E743D2802B /* StatusBarController.swift */,
 				5498821181D56BE2A0098CE2 /* TrayFoldApp.swift */,
@@ -193,6 +199,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				887551B88861520336E9BB89 /* AccessibilityPermissionTests.swift in Sources */,
+				59709E09EF6E28E121996404 /* DividerControllerTests.swift in Sources */,
 				926E1B9EBDFE6087B8E709C7 /* StatusBarControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -203,6 +210,7 @@
 			files = (
 				9C088891AD134F8DAAB417C4 /* AccessibilityPermission.swift in Sources */,
 				D074C85F8FF86D2497149EDC /* AppDelegate.swift in Sources */,
+				E544A4D1E93670F6A943C3D0 /* DividerController.swift in Sources */,
 				B5D94BD8565D000C82F0E100 /* StatusBarController.swift in Sources */,
 				1CCF9582FFB0FFC69AA17471 /* TrayFoldApp.swift in Sources */,
 			);
