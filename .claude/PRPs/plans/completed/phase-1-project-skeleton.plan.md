@@ -1,7 +1,7 @@
 # Plan: Phase 1 — Project Skeleton
 
 ## Summary
-Bootstrap TrayFold into a buildable, menu-bar-only macOS app that knows whether it has the Accessibility permission, helps the user grant it, and keeps that grant across rebuilds by signing with a stable, self-signed local certificate. After this phase, `Scripts/run.sh` builds and launches `TrayFold.app`: a chevron (or a warning triangle while permission is missing) appears in the menu bar, its menu shows the permission state, and there is no Dock icon. No divider, discovery, or tray popup yet.
+Bootstrap TrayFold into a buildable, menu-bar-only macOS app that knows whether it has the Accessibility permission, helps the user grant it, and keeps that grant across rebuilds by signing with a stable, self-signed local certificate. After this phase, `Scripts/run.sh` builds and launches `TrayFold.app`: the TrayFold glyph (or a warning triangle while permission is missing) appears in the menu bar, its menu shows the permission state, and there is no Dock icon. No divider, discovery, or tray popup yet.
 
 ## User Story
 As a notched-MacBook user building TrayFold for myself,
@@ -235,7 +235,7 @@ All paths relative to `/Users/reza/Projects/TrayFold`.
 - Divider status item or hiding anything (Phase 2).
 - Accessibility enumeration of other apps' items (Phase 3).
 - Tray popup or chevron click behavior beyond the menu (Phase 4).
-- App icon / asset catalog, release workflow, notarization (Phase 7).
+- Release workflow, notarization (Phase 7).
 - Launch at login, settings window, live icons.
 - Any network code or third-party dependency.
 
@@ -810,7 +810,7 @@ Scripts/run.sh
 sleep 2
 pgrep -x TrayFold
 lsappinfo info -only ApplicationType TrayFold
-log show --predicate 'subsystem == "com.rezaahmadn.TrayFold"' --last 2m --style compact | grep Launched
+/usr/bin/log show --predicate 'subsystem == "com.rezaahmadn.TrayFold"' --last 2m --style compact | grep Launched
 lsof -nP -i -a -c TrayFold || echo "no network sockets"
 ```
 EXPECT: a PID; `"ApplicationType"="UIElement"` (no Dock icon); a `Launched; Accessibility allowed: …` line; `no network sockets`.
@@ -824,7 +824,7 @@ EXPECT: roughly 200 lines total.
 ### Manual Validation
 - [ ] First launch (never allowed): system dialog appears; menu bar shows ⚠; menu says "Accessibility: Not allowed" and offers "Allow Accessibility Access…".
 - [ ] "Allow Accessibility Access…" opens System Settings on the Accessibility list, with TrayFold listed.
-- [ ] Flip TrayFold on: within ~1 s and without relaunch, the icon becomes ‹ and the menu says "Allowed".
+- [ ] Flip TrayFold on: within ~1 s and without relaunch, the icon becomes the TrayFold glyph (menu bar strip + tray) and the menu says "Allowed".
 - [ ] Rebuild with `Scripts/run.sh` (local certificate in place): log line says `Accessibility allowed: true` with no re-grant.
 - [ ] No Dock icon; Quit (⌘Q from the menu) exits.
 - [ ] If an earlier ad-hoc build polluted the list: `tccutil reset Accessibility com.rezaahmadn.TrayFold`, then grant again.
@@ -834,7 +834,7 @@ EXPECT: roughly 200 lines total.
 ## Acceptance Criteria
 - [ ] All tasks completed
 - [ ] Build: zero errors, zero warnings
-- [ ] 5 unit tests pass
+- [ ] 6 unit tests pass (5 + the icon amendment)
 - [ ] Permission survives a rebuild with the local certificate
 - [ ] No Dock icon, no network sockets
 - [ ] CI green on GitHub
@@ -862,3 +862,5 @@ EXPECT: roughly 200 lines total.
 - The macOS spike scripts (Accessibility enumeration, off-screen `AXPress`) that informed the PRD live outside the repo; their findings are recorded in the PRD's Research Summary.
 - `NSStatusItem.autosaveName` is set now so the chevron's position is stable before the divider arrives in Phase 2.
 - Subagent guidance: Tasks 1–3 and 5–10 can run unattended; Task 4 needs the author. Phases 2 and 3 can start in parallel worktrees once this phase is merged.
+- Runtime check uses `/usr/bin/log`: in zsh, a bare `log` is a shell built-in, not the unified-log tool.
+- **Amendment: icons moved into phase 1 at the author's request** ("don't forget to create the icon for it"). Mirrors Slice's pipeline: SVG sources in `Design/` (`AppIcon.svg`: dark squircle, light menu bar strip with a notch, tray popup holding a 3×2 grid of app dots; `MenuBarIcon.svg`: the same idea as a monochrome template glyph), rendered to PNGs by `Scripts/render-icon.swift` via `Scripts/render-icons.sh` into `TrayFold/Resources/Assets.xcassets` (`AppIcon.appiconset`, `MenuBarIcon.imageset`). `project.yml` gains `CFBundleIconName` and `ASSETCATALOG_COMPILER_APPICON_NAME`. Once allowed, the status item shows the `MenuBarIcon` asset instead of the `chevron.left` symbol (the warning triangle stays while permission is missing); `StatusBarController.icon(granted:)` replaces `symbolName(granted:)`, and a test checks the glyph ships as a template (6 unit tests). `AppDelegate` also returns early when `XCTestConfigurationFilePath` is set, so `xcodebuild test` no longer shows a menu bar item or the Accessibility prompt.

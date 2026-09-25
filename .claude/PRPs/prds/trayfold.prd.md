@@ -140,7 +140,7 @@ Divider + chevron + popup grid (app icon / label) + reveal-and-press on click, A
 
 | # | Phase | Description | Status | Parallel | Depends | PRP Plan |
 |---|-------|-------------|--------|----------|---------|----------|
-| 1 | Project skeleton | XcodeGen project, menu-bar-only app, stable local signing, Accessibility onboarding | in-progress | - | - | [phase-1-project-skeleton.plan.md](../plans/phase-1-project-skeleton.plan.md) |
+| 1 | Project skeleton | XcodeGen project, menu-bar-only app, stable local signing, Accessibility onboarding | complete | - | - | [plan](../plans/completed/phase-1-project-skeleton.plan.md) · [report](../reports/phase-1-project-skeleton-report.md) |
 | 2 | Divider | Own divider status item; expand/collapse; persists across relaunch | pending | with 3 | 1 | - |
 | 3 | Discovery | Accessibility enumeration of menu bar items + event-driven refresh | pending | with 2 | 1 | - |
 | 4 | Tray popup | Chevron + popup grid of hidden items (app icon / label) | pending | - | 2, 3 | - |

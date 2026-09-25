@@ -1,0 +1,454 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1CCF9582FFB0FFC69AA17471 /* TrayFoldApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5498821181D56BE2A0098CE2 /* TrayFoldApp.swift */; };
+		887551B88861520336E9BB89 /* AccessibilityPermissionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7AA16B79D89A0B69778413 /* AccessibilityPermissionTests.swift */; };
+		926E1B9EBDFE6087B8E709C7 /* StatusBarControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF9DBB486BF093CD92CAC73 /* StatusBarControllerTests.swift */; };
+		9C088891AD134F8DAAB417C4 /* AccessibilityPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882F5A59BFD5A940D1D10A9F /* AccessibilityPermission.swift */; };
+		A97D262D06A67B42C296E733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F64644632B76AF279EF7EDC /* Assets.xcassets */; };
+		B5D94BD8565D000C82F0E100 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39257AE0BFAAA3E743D2802B /* StatusBarController.swift */; };
+		D074C85F8FF86D2497149EDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0938E0D1DA505AA6C8D833 /* AppDelegate.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8C7A302B937565C2B1B14211 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3EC6E7AA2A5C99CF1024C632 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A4CE5ABEBC0F5ED5B598C907;
+			remoteInfo = TrayFold;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1F0938E0D1DA505AA6C8D833 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		39257AE0BFAAA3E743D2802B /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
+		5498821181D56BE2A0098CE2 /* TrayFoldApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrayFoldApp.swift; sourceTree = "<group>"; };
+		6A48BD20C028FC7A95B6B4ED /* TrayFoldTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrayFoldTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F64644632B76AF279EF7EDC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8521A5F35DC6AE31D43CE8D1 /* TrayFold.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrayFold.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		882F5A59BFD5A940D1D10A9F /* AccessibilityPermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityPermission.swift; sourceTree = "<group>"; };
+		8A7AA16B79D89A0B69778413 /* AccessibilityPermissionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityPermissionTests.swift; sourceTree = "<group>"; };
+		92E24CFE013BD4D8ECBD25E6 /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
+		D86F8AE87A906DBC355C2128 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		FEF9DBB486BF093CD92CAC73 /* StatusBarControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarControllerTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		2A5C17B3601CA5A2D0A457EF /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				7F64644632B76AF279EF7EDC /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		309A2D22BA046326186C8290 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				92E24CFE013BD4D8ECBD25E6 /* Signing.xcconfig */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		74C5851DA0E8AC9E7D413948 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8521A5F35DC6AE31D43CE8D1 /* TrayFold.app */,
+				6A48BD20C028FC7A95B6B4ED /* TrayFoldTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9D49001BA5B1CA37F7615D52 /* TrayFoldTests */ = {
+			isa = PBXGroup;
+			children = (
+				8A7AA16B79D89A0B69778413 /* AccessibilityPermissionTests.swift */,
+				FEF9DBB486BF093CD92CAC73 /* StatusBarControllerTests.swift */,
+			);
+			path = TrayFoldTests;
+			sourceTree = "<group>";
+		};
+		A3459669B83FC29909F69A18 = {
+			isa = PBXGroup;
+			children = (
+				309A2D22BA046326186C8290 /* Config */,
+				E4BE52EDED52BACF9C24DDCB /* TrayFold */,
+				9D49001BA5B1CA37F7615D52 /* TrayFoldTests */,
+				74C5851DA0E8AC9E7D413948 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E4BE52EDED52BACF9C24DDCB /* TrayFold */ = {
+			isa = PBXGroup;
+			children = (
+				882F5A59BFD5A940D1D10A9F /* AccessibilityPermission.swift */,
+				1F0938E0D1DA505AA6C8D833 /* AppDelegate.swift */,
+				D86F8AE87A906DBC355C2128 /* Info.plist */,
+				39257AE0BFAAA3E743D2802B /* StatusBarController.swift */,
+				5498821181D56BE2A0098CE2 /* TrayFoldApp.swift */,
+				2A5C17B3601CA5A2D0A457EF /* Resources */,
+			);
+			path = TrayFold;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		27599DAF066CB61E043FF25C /* TrayFoldTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C0932567AB46C0C6A332D1ED /* Build configuration list for PBXNativeTarget "TrayFoldTests" */;
+			buildPhases = (
+				8D067C68DB3140EBD2A7D63E /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				09C95553368D7D093BF43F7A /* PBXTargetDependency */,
+			);
+			name = TrayFoldTests;
+			packageProductDependencies = (
+			);
+			productName = TrayFoldTests;
+			productReference = 6A48BD20C028FC7A95B6B4ED /* TrayFoldTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A4CE5ABEBC0F5ED5B598C907 /* TrayFold */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2C3DB692720602A3EAF6C7BA /* Build configuration list for PBXNativeTarget "TrayFold" */;
+			buildPhases = (
+				BCCD8B8BE5223D2F502CFD2E /* Sources */,
+				1BF86E15CCD7DB3EF88657BB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TrayFold;
+			packageProductDependencies = (
+			);
+			productName = TrayFold;
+			productReference = 8521A5F35DC6AE31D43CE8D1 /* TrayFold.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3EC6E7AA2A5C99CF1024C632 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					27599DAF066CB61E043FF25C = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Manual;
+					};
+					A4CE5ABEBC0F5ED5B598C907 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 9292615060B9E7B537FC6B65 /* Build configuration list for PBXProject "TrayFold" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = A3459669B83FC29909F69A18;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 74C5851DA0E8AC9E7D413948 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A4CE5ABEBC0F5ED5B598C907 /* TrayFold */,
+				27599DAF066CB61E043FF25C /* TrayFoldTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1BF86E15CCD7DB3EF88657BB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A97D262D06A67B42C296E733 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D067C68DB3140EBD2A7D63E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				887551B88861520336E9BB89 /* AccessibilityPermissionTests.swift in Sources */,
+				926E1B9EBDFE6087B8E709C7 /* StatusBarControllerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BCCD8B8BE5223D2F502CFD2E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C088891AD134F8DAAB417C4 /* AccessibilityPermission.swift in Sources */,
+				D074C85F8FF86D2497149EDC /* AppDelegate.swift in Sources */,
+				B5D94BD8565D000C82F0E100 /* StatusBarController.swift in Sources */,
+				1CCF9582FFB0FFC69AA17471 /* TrayFoldApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		09C95553368D7D093BF43F7A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A4CE5ABEBC0F5ED5B598C907 /* TrayFold */;
+			targetProxy = 8C7A302B937565C2B1B14211 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		041F595F6DE0534FF3949AB2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = TrayFold/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.rezaahmadn.TrayFold;
+				SDKROOT = macosx;
+				SWIFT_STRICT_CONCURRENCY = complete;
+			};
+			name = Release;
+		};
+		3242C5A8ED94B8F880D2C1D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = TrayFold/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.rezaahmadn.TrayFold;
+				SDKROOT = macosx;
+				SWIFT_STRICT_CONCURRENCY = complete;
+			};
+			name = Debug;
+		};
+		68431C735E8878D2393099C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92E24CFE013BD4D8ECBD25E6 /* Signing.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "$(TRAYFOLD_SIGN_IDENTITY)";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		72126ADA4498A35662D68654 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.rezaahmadn.TrayFoldTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrayFold.app/Contents/MacOS/TrayFold";
+			};
+			name = Debug;
+		};
+		8A1E4489B8C926069FB8A742 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.rezaahmadn.TrayFoldTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrayFold.app/Contents/MacOS/TrayFold";
+			};
+			name = Release;
+		};
+		DC9F7163C32C5FCD39450A85 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92E24CFE013BD4D8ECBD25E6 /* Signing.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "$(TRAYFOLD_SIGN_IDENTITY)";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2C3DB692720602A3EAF6C7BA /* Build configuration list for PBXNativeTarget "TrayFold" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3242C5A8ED94B8F880D2C1D0 /* Debug */,
+				041F595F6DE0534FF3949AB2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9292615060B9E7B537FC6B65 /* Build configuration list for PBXProject "TrayFold" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DC9F7163C32C5FCD39450A85 /* Debug */,
+				68431C735E8878D2393099C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C0932567AB46C0C6A332D1ED /* Build configuration list for PBXNativeTarget "TrayFoldTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				72126ADA4498A35662D68654 /* Debug */,
+				8A1E4489B8C926069FB8A742 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3EC6E7AA2A5C99CF1024C632 /* Project object */;
+}

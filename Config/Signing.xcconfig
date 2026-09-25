@@ -1,0 +1,10 @@
+// Code-signing identity for TrayFold builds.
+//
+// Default: ad-hoc ("-"). Builds anywhere, but macOS treats every rebuild as a
+// new app and forgets the Accessibility permission.
+//
+// Scripts/setup-signing.sh creates Signing.local.xcconfig (git-ignored) that
+// switches this Mac to a stable self-signed certificate. `#include?` means
+// "include if it exists", so clones and CI keep working without it.
+TRAYFOLD_SIGN_IDENTITY = -
+#include? "Signing.local.xcconfig"

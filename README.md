@@ -2,7 +2,7 @@
 
 A Windows-style system tray for the macOS menu bar, built for MacBooks with a notch.
 
-> **Status: planning.** No code yet. The product spec lives in [`.claude/PRPs/prds/trayfold.prd.md`](.claude/PRPs/prds/trayfold.prd.md).
+> **Status: early development.** Phase 1 (project skeleton) done; nothing is hidden yet. The product spec lives in [`.claude/PRPs/prds/trayfold.prd.md`](.claude/PRPs/prds/trayfold.prd.md).
 
 ## The problem
 
@@ -27,6 +27,28 @@ Existing fixes either reveal hidden icons back into the same cramped bar, cost m
 
 - macOS 26 (Tahoe) on Apple silicon.
 - macOS 27 ships its own overflow button; support there is not guaranteed.
+
+## Build from source
+
+Requires Xcode 26 on macOS 26.
+
+```sh
+git clone https://github.com/rezaahmadn/TrayFold.git
+cd TrayFold
+Scripts/run.sh          # or: open TrayFold.xcodeproj, then Cmd+R
+```
+
+On first launch, allow TrayFold in **System Settings → Privacy & Security → Accessibility**.
+
+### Keep the permission across rebuilds (optional, recommended for development)
+
+Default builds are ad-hoc signed, so macOS forgets the Accessibility permission every time you rebuild. Run once:
+
+```sh
+Scripts/setup-signing.sh
+```
+
+It creates a self-signed "TrayFold Local Signing" certificate in your login keychain (macOS asks for your password to trust it) and a git-ignored `Config/Signing.local.xcconfig` that uses it.
 
 ## License
 
