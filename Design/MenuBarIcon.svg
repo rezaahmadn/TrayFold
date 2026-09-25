@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 18 18">
+  <!-- monochrome template image: black + alpha; macOS tints it for light/dark menu bars -->
+  <!-- drawn on an 18x18 grid (1 unit = 1px at 1x); every part is at least 1.5px thick -->
+  <g fill="#000">
+    <!-- menu bar strip with a notch dipping down from its top edge (the app icon in miniature) -->
+    <path d="M2 0.5 H6.5 A1.5 1.5 0 0 0 8 2 H10 A1.5 1.5 0 0 0 11.5 0.5 H16 A1 1 0 0 1 17 1.5 V2.5
+             A1 1 0 0 1 16 3.5 H2 A1 1 0 0 1 1 2.5 V1.5 A1 1 0 0 1 2 0.5 Z"/>
+    <!-- tray outline, 1.5px thick -->
+    <path fill-rule="evenodd"
+          d="M3.5 5 H14.5 A2.5 2.5 0 0 1 17 7.5 V14.5 A2.5 2.5 0 0 1 14.5 17 H3.5 A2.5 2.5 0 0 1 1 14.5 V7.5
+             A2.5 2.5 0 0 1 3.5 5 Z
+             M3.5 6.5 A1 1 0 0 0 2.5 7.5 V14.5 A1 1 0 0 0 3.5 15.5 H14.5 A1 1 0 0 0 15.5 14.5 V7.5
+             A1 1 0 0 0 14.5 6.5 Z"/>
+    <!-- 2x2 grid of app dots -->
+    <rect x="4.25" y="7.75" width="4" height="3" rx="0.8"/>
+    <rect x="9.75" y="7.75" width="4" height="3" rx="0.8"/>
+    <rect x="4.25" y="11.25" width="4" height="3" rx="0.8"/>
+    <rect x="9.75" y="11.25" width="4" height="3" rx="0.8"/>
+  </g>
+</svg>

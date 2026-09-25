@@ -21,3 +21,6 @@ Packages/
 # Release artifacts
 *.zip
 *.dmg
+
+# Local signing override (Scripts/setup-signing.sh)
+Config/Signing.local.xcconfig

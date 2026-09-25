@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2E3850"/>
+      <stop offset="1" stop-color="#11151F"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F4F6FB"/>
+      <stop offset="1" stop-color="#D8DEEA"/>
+    </linearGradient>
+    <linearGradient id="tray" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#56637F"/>
+      <stop offset="1" stop-color="#3D4762"/>
+    </linearGradient>
+    <clipPath id="body">
+      <rect x="100" y="100" width="824" height="824" rx="185"/>
+    </clipPath>
+  </defs>
+  <!-- macOS squircle: 824px artwork centered on a 1024 canvas -->
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#bg)"/>
+  <!-- light menu bar strip, clipped to the body, with a MacBook-style notch cut from its top edge -->
+  <path clip-path="url(#body)" fill="url(#bar)"
+        d="M100 100 H382 A20 20 0 0 1 402 120 V170 A50 50 0 0 0 452 220 H572 A50 50 0 0 0 622 170
+           V120 A20 20 0 0 1 642 100 H924 V270 H100 Z"/>
+  <!-- tray popup: a soft shadow (stacked translucent copies), then the panel with an arrow pointing at the bar -->
+  <g fill="#000">
+    <rect x="196" y="382" width="632" height="436" rx="88" opacity="0.12"/>
+    <rect x="204" y="376" width="616" height="428" rx="82" opacity="0.14"/>
+    <rect x="208" y="370" width="608" height="426" rx="78" opacity="0.16"/>
+  </g>
+  <path fill="url(#tray)"
+        d="M212 434 A72 72 0 0 1 284 362 H446 L500 308 A17 17 0 0 1 524 308 L578 362 H740
+           A72 72 0 0 1 812 434 V718 A72 72 0 0 1 740 790 H284 A72 72 0 0 1 212 718 Z"/>
+  <!-- 3x2 grid of app-icon dots: 130px rounded squares, 46px apart -->
+  <rect x="271" y="423" width="130" height="130" rx="36" fill="#FF6B5E"/>
+  <rect x="447" y="423" width="130" height="130" rx="36" fill="#FFC145"/>
+  <rect x="623" y="423" width="130" height="130" rx="36" fill="#4CD787"/>
+  <rect x="271" y="599" width="130" height="130" rx="36" fill="#4EA8FF"/>
+  <rect x="447" y="599" width="130" height="130" rx="36" fill="#A98BFA"/>
+  <rect x="623" y="599" width="130" height="130" rx="36" fill="#F2F4F8"/>
+</svg>

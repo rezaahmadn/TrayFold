@@ -1,0 +1,22 @@
+# Builds and tests TrayFold on every push and pull request to main.
+# Ad-hoc signed: CI has no local certificate (Config/Signing.local.xcconfig is git-ignored).
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Show Xcode
+        run: xcodebuild -version
+
+      - name: Build and test
+        run: |
+          xcodebuild -project TrayFold.xcodeproj -scheme TrayFold -configuration Debug \
+            -derivedDataPath build CODE_SIGN_IDENTITY=- test
