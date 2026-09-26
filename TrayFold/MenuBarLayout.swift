@@ -51,6 +51,32 @@ enum MenuBarLayout {
         return leftArea.maxX...rightArea.minX
     }
 
+    /// How long the divider should be so the item at `itemFrame` comes on-screen for a
+    /// press, or nil when no shrinking is needed (the item is already on-screen).
+    ///
+    /// Shrinking the divider by d points moves every item to its left right by exactly d
+    /// (measured). The item is moved until its left edge reaches `targetMinX` (the notch's
+    /// right edge), but never shorter than `minimum` (the collapsed divider): an item that
+    /// can't get that far stays wherever a collapsed divider leaves it, which is still
+    /// on-screen, under or left of the notch, where its menu opens just as well.
+    /// - Parameters:
+    ///   - itemFrame: The item's frame, measured while the divider is `currentLength` long.
+    ///   - screenFrame: The screen the menu bar is on.
+    static func revealLength(
+        itemFrame: CGRect, currentLength: CGFloat, targetMinX: CGFloat, minimum: CGFloat, screenFrame: CGRect
+    ) -> CGFloat? {
+        guard !isOnScreen(itemFrame, screenFrame: screenFrame) else { return nil }
+        let shrink = targetMinX - itemFrame.minX
+        return min(currentLength, max(minimum, currentLength - shrink))
+    }
+
+    /// Whether all of `frame` is within the screen's x range. A pressed item's menu opens
+    /// right under it, and that is visible even when macOS doesn't draw the item itself
+    /// (under the notch, or crowded out): measured with 1Password at x 599, 855 and 915.
+    static func isOnScreen(_ frame: CGRect, screenFrame: CGRect) -> Bool {
+        frame.minX >= screenFrame.minX && frame.maxX <= screenFrame.maxX
+    }
+
     /// The notch range of a real screen. macOS reports the areas beside the notch as
     /// `auxiliaryTopLeftArea` / `auxiliaryTopRightArea`, in the same x coordinates as items.
     @MainActor

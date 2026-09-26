@@ -44,9 +44,25 @@ struct AXElement: @unchecked Sendable, Equatable {
         return AXElement(value as! AXUIElement)
     }
 
+    /// A yes/no attribute such as "AXSelected"; false when it's missing.
+    func bool(_ attribute: String) -> Bool {
+        value(attribute) as? Bool ?? false
+    }
+
+    /// An attribute that lists elements, such as "AXChildren" or "AXWindows".
+    func elements(_ attribute: String) -> [AXElement] {
+        (value(attribute) as? [AXUIElement] ?? []).map(AXElement.init)
+    }
+
     /// The element's children, in the order the app reports them.
-    var children: [AXElement] {
-        (value("AXChildren") as? [AXUIElement] ?? []).map(AXElement.init)
+    var children: [AXElement] { elements("AXChildren") }
+
+    /// Clicks the element, as VoiceOver would. Blocks until the app answers, at most
+    /// `messagingTimeout`: an app that opens a menu only answers once the menu closes, so
+    /// for menus this returns `.cannotComplete` after the timeout while the menu is already
+    /// open (measured: menu open after 14–30 ms). Call it from a background task.
+    func press() -> AXError {
+        AXUIElementPerformAction(raw, "AXPress" as CFString)
     }
 
     /// Position and size in screen points. x grows to the right from the left edge of the

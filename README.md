@@ -2,7 +2,7 @@
 
 A Windows-style system tray for the macOS menu bar, built for MacBooks with a notch.
 
-> **Status: early development.** The divider folds icons away and the chevron opens a popup listing them. Clicking an entry doesn't open its menu yet (next phase). The product spec lives in [`.claude/PRPs/prds/trayfold.prd.md`](.claude/PRPs/prds/trayfold.prd.md).
+> **Status: early development.** The divider folds icons away, the chevron opens a popup listing them, and clicking an entry opens that app's own menu. The product spec lives in [`.claude/PRPs/prds/trayfold.prd.md`](.claude/PRPs/prds/trayfold.prd.md).
 
 ## The problem
 
@@ -53,6 +53,7 @@ It creates a self-signed "TrayFold Local Signing" certificate in your login keyc
 ## Usage
 
 - **Left-click** the TrayFold chevron (⌄): a popup shows every icon you can't see right now, whether folded away, under the notch, or off-screen.
+- **Click an icon in the popup** to open its menu: TrayFold briefly unfolds just enough of the bar, opens the app's real menu (or its panel), and folds the bar away again once the menu closes. It does what a left-click on that icon does, so apps that open a window on click (Bitwarden, for example) open their window.
 - **Right-click** (or ⌃-click) the chevron: the menu, with **Show Hidden Icons** / **Hide Icons** and **Quit**.
 
 To choose what to hide: right-click ⌄ → **Show Hidden Icons**, ⌘-drag icons to the left of the thin divider line, then click anywhere below the menu bar (or choose **Hide Icons**) to fold them away again. If the chevron ever goes missing on a crowded bar, click anywhere below the menu bar, or open TrayFold again (e.g. from Spotlight).

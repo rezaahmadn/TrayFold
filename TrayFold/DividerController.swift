@@ -116,6 +116,23 @@ final class DividerController: NSObject {
         }
     }
 
+    /// Shrinks the expanded divider to `length` for a moment, so the items just left of it
+    /// come on-screen to be pressed (see `RevealController`). Unlike `collapse()`, it keeps
+    /// the expanded look and doesn't install the outside-click re-fold: a click inside the
+    /// revealed item's menu must not fold it away. Does nothing while collapsed, when
+    /// everything is on-screen anyway.
+    func reveal(length: CGFloat) {
+        guard isExpanded else { return }
+        statusItem.length = length
+        Self.logger.info("Divider shrunk to \(Int(length), privacy: .public) pt to reveal an item")
+    }
+
+    /// Ends a `reveal(length:)`: back to fully expanded, unless the user chose "Show Hidden
+    /// Icons" in the meantime.
+    func endReveal() {
+        if isExpanded { expand() }
+    }
+
     /// Switches between `expand()` and `collapse()`.
     func toggle() {
         isExpanded ? collapse() : expand()

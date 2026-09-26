@@ -55,6 +55,34 @@ struct MenuBarLayoutTests {
         #expect(visibility(item(x: -5016), divider: -4075) == .hiddenByDivider)
     }
 
+    let screen = CGRect(x: 0, y: 0, width: 1512, height: 982)
+
+    func revealLength(x: CGFloat, target: CGFloat = 850) -> CGFloat? {
+        MenuBarLayout.revealLength(itemFrame: item(x: x, width: 34), currentLength: 5_000, targetMinX: target, minimum: 12, screenFrame: screen)
+    }
+
+    /// Measured: shrinking the divider by d moves the items left of it right by exactly d.
+    @Test func revealShrinksTheDividerJustEnough() {
+        #expect(revealLength(x: -4101) == 49)          // 1Password lands at x 850
+    }
+
+    @Test func revealNeverGoesBelowTheCollapsedLength() {
+        #expect(revealLength(x: -4167) == 12)          // WPS can't get that far right
+        #expect(revealLength(x: -4101, target: .infinity) == 12)   // no notch: full collapse
+    }
+
+    @Test func noRevealForAnItemAlreadyOnScreen() {
+        #expect(revealLength(x: 900) == nil)
+        #expect(revealLength(x: 821) == nil)           // under the notch
+    }
+
+    @Test func onScreenMeansTheWholeItemIsInside() {
+        #expect(!MenuBarLayout.isOnScreen(item(x: -30), screenFrame: screen))
+        #expect(MenuBarLayout.isOnScreen(item(x: 0, width: 34), screenFrame: screen))
+        #expect(MenuBarLayout.isOnScreen(item(x: 1478, width: 34), screenFrame: screen))
+        #expect(!MenuBarLayout.isOnScreen(item(x: 1490, width: 34), screenFrame: screen))
+    }
+
     @Test func notchRangeIsTheGapBetweenTheAreas() {
         let left = CGRect(x: 0, y: 950, width: 665, height: 32)
         let right = CGRect(x: 850, y: 950, width: 662, height: 32)

@@ -11,6 +11,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusBar: StatusBarController?
     private var divider: DividerController?
     private var menuBarItems: MenuBarItemStore?
+    private var reveal: RevealController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Unit tests run inside this app; skip the menu bar item and permission prompt there.
@@ -27,10 +28,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // so a first launch puts it right next to the chevron. Starts expanded.
         let divider = DividerController(chevronAutosaveName: StatusBarController.autosaveName)
         let menuBarItems = MenuBarItemStore()
+        let reveal = RevealController(system: .live(divider: divider))
         // Kept alive by the status bar, which opens it.
-        let tray = TrayController(store: menuBarItems, divider: divider)
+        let tray = TrayController(store: menuBarItems, divider: divider, reveal: reveal)
         statusBar = StatusBarController(permission: permission, divider: divider, tray: tray)
         self.divider = divider
+        self.reveal = reveal
         self.permission = permission
 
         // The store has one change callback: log the new list, then let an open tray redraw.
@@ -48,5 +51,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
         divider?.expand()
         return false
+    }
+
+    /// Quitting removes the divider, so every folded icon shows until TrayFold runs again;
+    /// that can't be avoided. This only ends a reveal cleanly if one is running.
+    func applicationWillTerminate(_ notification: Notification) {
+        reveal?.stop()
     }
 }
