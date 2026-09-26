@@ -26,13 +26,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // The divider first: it seeds both items' positions before either exists,
         // so a first launch puts it right next to the chevron. Starts expanded.
         let divider = DividerController(chevronAutosaveName: StatusBarController.autosaveName)
-        statusBar = StatusBarController(permission: permission, divider: divider)
+        let menuBarItems = MenuBarItemStore()
+        // Kept alive by the status bar, which opens it.
+        let tray = TrayController(store: menuBarItems, divider: divider)
+        statusBar = StatusBarController(permission: permission, divider: divider, tray: tray)
         self.divider = divider
         self.permission = permission
 
-        let menuBarItems = MenuBarItemStore()
-        menuBarItems.onChange = { items in
+        // The store has one change callback: log the new list, then let an open tray redraw.
+        menuBarItems.onChange = { [weak tray] items in
             Self.logger.notice("Menu bar items: \(MenuBarItemStore.summary(items), privacy: .public)")
+            tray?.itemsChanged()
         }
         menuBarItems.start()
         self.menuBarItems = menuBarItems
