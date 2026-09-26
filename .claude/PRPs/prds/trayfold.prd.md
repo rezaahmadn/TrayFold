@@ -40,7 +40,7 @@ We'll know we're right when the author uninstalls Thaw and uses TrayFold daily f
 | Permissions requested by default | Accessibility only | System Settings → Privacy & Security |
 | Network access | None (no network code, no updater) | `lsof -i -c TrayFold` shows nothing; code review |
 | Idle CPU / memory | ~0% CPU, < 40 MB RSS | Activity Monitor after 1 hour idle |
-| Codebase size | < ~1,000 lines of Swift, zero third-party dependencies | `wc -l`, `project.yml` |
+| Codebase size | < ~1,000 lines of Swift code (excluding comments and blank lines), zero third-party dependencies | code-line count of `TrayFold/`, `project.yml` |
 | Daily use | 2 weeks without reverting to Thaw | Self-report |
 
 ## Open Questions
@@ -48,7 +48,7 @@ We'll know we're right when the author uninstalls Thaw and uses TrayFold daily f
 - [ ] How to reliably detect that a pressed item's menu has closed so TrayFold can re-hide it (AX `AXMenuClosed` notification, polling the menu child, or re-hide on the next tray open)?
 - [ ] Can the Battery item (and other Control Center items) be ⌘-dragged past a third-party divider on macOS 26? This was the failure seen in Thaw. *Partly answered (phase 2): Wi-Fi (Control Center) moved past TrayFold's divider and hid; Battery not tested (not in this Mac's bar).*
 - [ ] `AXPress` on a menu bar item blocks for ~1.5 s while the menu is open (spike returned `kAXErrorCannotComplete`, -25204). Confirm that running it off the main thread keeps the UI responsive.
-- [ ] Where does a revealed item land when the bar is crowded: under the notch (menu still visible, since menus drop below the bar) or off the left edge (menu invisible)? May need to collapse only part of the divider. *Phase 2 finding: fully collapsing on a crowded bar let macOS drop TrayFold's own chevron and divider out of sight (AX still reported them). Phase 4/5 must reveal only what's needed and re-fold automatically; reopening the app re-folds today.*
+- [ ] Where does a revealed item land when the bar is crowded: under the notch (menu still visible, since menus drop below the bar) or off the left edge (menu invisible)? May need to collapse only part of the divider. *Phase 2 finding: fully collapsing on a crowded bar let macOS drop TrayFold's own chevron and divider out of sight (AX still reported them). Phase 4/5 must reveal only what's needed and re-fold automatically; reopening the app re-folds today. Phase 4 added an automatic re-fold on the first click outside the menu bar while collapsed.*
 - [x] How to keep a stable code-signing identity so macOS doesn't drop the Accessibility grant on every rebuild without a paid developer account? *Answered (phase 1): local self-signed certificate via `Scripts/setup-signing.sh`.*
 - [ ] Does the divider approach survive macOS 27's single-window menu bar?
 - [ ] Unsigned builds trigger Gatekeeper warnings for other users. Is "build from source" acceptable for a public audience?
@@ -143,7 +143,7 @@ Divider + chevron + popup grid (app icon / label) + reveal-and-press on click, A
 | 1 | Project skeleton | XcodeGen project, menu-bar-only app, stable local signing, Accessibility onboarding | complete | - | - | [plan](../plans/completed/phase-1-project-skeleton.plan.md) · [report](../reports/phase-1-project-skeleton-report.md) |
 | 2 | Divider | Own divider status item; expand/collapse; persists across relaunch | complete | with 3 | 1 | [plan](../plans/completed/phase-2-divider.plan.md) · [report](../reports/phase-2-divider-report.md) |
 | 3 | Discovery | Accessibility enumeration of menu bar items + event-driven refresh | complete | with 2 | 1 | [plan](../plans/completed/phase-3-discovery.plan.md) · [report](../reports/phase-3-discovery-report.md) |
-| 4 | Tray popup | Chevron + popup grid of hidden items (app icon / label) | pending | - | 2, 3 | - |
+| 4 | Tray popup | Chevron + popup grid of hidden items (app icon / label) | complete | - | 2, 3 | [plan](../plans/completed/phase-4-tray-popup.plan.md) · [report](../reports/phase-4-tray-popup-report.md) |
 | 5 | Reveal & press | Click → collapse → `AXPress` → re-hide on menu close | pending | - | 4 | - |
 | 6 | Live icons toggle | Optional Screen Recording capture of item images, off by default | pending | with 7 | 4 | - |
 | 7 | Public release | README usage/build docs, GitHub release zip, issue templates | pending | with 6 | 5 | - |
@@ -207,6 +207,8 @@ Phases 2 and 3 are independent (one writes to the menu bar, the other only reads
 | License | MIT | GPL-3.0, Apache-2.0 | Permissive; matches author's other projects |
 | Visibility | Public on GitHub from the PRD stage | Publish after MVP | Author's choice |
 | Implementation method | Subagents per phase | Single-thread implementation | Author's instruction; phases 2/3 and 6/7 parallelize |
+| Size budget | Count code lines only (~660 after phase 4) | Count all lines incl. comments (1,065 after phase 4) | Author is new to Swift; explanatory comments are kept, not traded for budget |
+| Popup activation | Popup never activates TrayFold; a global mouse monitor (only while open) closes it | `NSApp.activate()` + transient popover | Keeps focus in the user's app; no extra permission |
 
 ---
 
