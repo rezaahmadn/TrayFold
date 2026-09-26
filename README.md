@@ -93,7 +93,7 @@ It creates a self-signed "TrayFold Local Signing" certificate in your login keyc
 
 ## Known limitations
 
-- **One click action per item.** Clicking an entry does what a left-click on that icon does. Apps that keep their menu on right-click only (Bitwarden, for example, opens its main window on left-click) give you the left-click action.
+- **One click action per item.** Clicking an entry does what a left-click on that icon does. Apps that keep their menu on right-click only (some open their main window on left-click instead) give you the left-click action.
 - **Other menu bar managers.** Thaw, Ice, Bartender, Hidden Bar and similar tools move the same icons around. Quit them before using TrayFold.
 - **macOS 27** replaced the menu bar with a single window and added its own overflow button. The divider trick may not work there; TrayFold targets macOS 26.
 - **Tested on one Mac:** a 14-inch MacBook Pro with its built-in notched display, macOS 26.7. External and multiple displays are untested (TrayFold assumes the main display).
