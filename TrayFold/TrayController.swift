@@ -18,7 +18,7 @@ final class TrayController {
     /// Hosts the SwiftUI grid. Its `rootView` is replaced whenever the list changes.
     private let content = NSHostingController(rootView: TrayView(items: [], onSelect: { _ in }))
     /// Watches clicks in other apps while the popup is open; see `toggle(relativeTo:)`.
-    private var clickMonitor: Any?
+    private let outsideClicks = OutsideClickMonitor()
 
     init(store: MenuBarItemStore, divider: DividerController) {
         self.store = store
@@ -35,14 +35,8 @@ final class TrayController {
         if popover.isShown { return close() }
         render()
         // TrayFold never becomes the active app (the user's app keeps focus), so
-        // `.transient` doesn't hear about clicks elsewhere. A global monitor does: it sees
-        // only other apps' clicks and, for mouse clicks, needs no extra permission.
-        if clickMonitor == nil {
-            clickMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) { [weak self] _ in
-                // AppKit calls this on the main thread; tell Swift so.
-                MainActor.assumeIsolated { self?.close() }
-            }
-        }
+        // `.transient` doesn't hear about clicks elsewhere. A global monitor does.
+        outsideClicks.start([.leftMouseDown, .rightMouseDown]) { [weak self] in self?.close() }
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
         if let clicked = NSApp.currentEvent?.timestamp {
             let milliseconds = Int(((ProcessInfo.processInfo.systemUptime - clicked) * 1000).rounded())
@@ -57,10 +51,7 @@ final class TrayController {
 
     func close() {
         popover.performClose(nil)
-        if let clickMonitor {
-            NSEvent.removeMonitor(clickMonitor)
-            self.clickMonitor = nil
-        }
+        outsideClicks.stop()
     }
 
     /// Called when the store's items change; redraws only while the popup is open.

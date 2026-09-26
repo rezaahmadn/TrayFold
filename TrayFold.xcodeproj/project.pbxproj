@@ -24,6 +24,7 @@
 		C8CB97F1488210C2D4DDE856 /* MenuBarLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D527897B6F15580E66DF730 /* MenuBarLayoutTests.swift */; };
 		D074C85F8FF86D2497149EDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0938E0D1DA505AA6C8D833 /* AppDelegate.swift */; };
 		D6A6D2F2B051C43BBE0BD57E /* MenuBarItemStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59EC4C106B74B4451A9E8D8F /* MenuBarItemStoreTests.swift */; };
+		D7A3AAD3E2A780CFB3848CBB /* OutsideClickMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85FC04CD9BF5F6EE67E4FF8 /* OutsideClickMonitor.swift */; };
 		D7B07D90849CB2333A081088 /* MenuBarItemScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877018EB855F667B8EDE19E0 /* MenuBarItemScannerTests.swift */; };
 		DDA6E41F567282A19EBE9AFE /* MenuBarItemStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197116311A773279ACA36ABB /* MenuBarItemStore.swift */; };
 		E544A4D1E93670F6A943C3D0 /* DividerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBC042F6D1EE16CBAAB5038 /* DividerController.swift */; };
@@ -61,6 +62,7 @@
 		8A7AA16B79D89A0B69778413 /* AccessibilityPermissionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityPermissionTests.swift; sourceTree = "<group>"; };
 		92E24CFE013BD4D8ECBD25E6 /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
 		9CBC042F6D1EE16CBAAB5038 /* DividerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerController.swift; sourceTree = "<group>"; };
+		D85FC04CD9BF5F6EE67E4FF8 /* OutsideClickMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutsideClickMonitor.swift; sourceTree = "<group>"; };
 		D86F8AE87A906DBC355C2128 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F6E18777083876787911868C /* MenuBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarItem.swift; sourceTree = "<group>"; };
 		FEF9DBB486BF093CD92CAC73 /* StatusBarControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarControllerTests.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				692AD367D546C6A81C38E403 /* MenuBarItemScanner.swift */,
 				197116311A773279ACA36ABB /* MenuBarItemStore.swift */,
 				84CC0C019F0B1968AF5473B8 /* MenuBarLayout.swift */,
+				D85FC04CD9BF5F6EE67E4FF8 /* OutsideClickMonitor.swift */,
 				39257AE0BFAAA3E743D2802B /* StatusBarController.swift */,
 				6265877D10D488BC5974E28D /* TrayController.swift */,
 				5498821181D56BE2A0098CE2 /* TrayFoldApp.swift */,
@@ -253,6 +256,7 @@
 				454A21AF0C303A91B2F3F429 /* MenuBarItemScanner.swift in Sources */,
 				DDA6E41F567282A19EBE9AFE /* MenuBarItemStore.swift in Sources */,
 				C857A743E169E1F5C5DBA6C7 /* MenuBarLayout.swift in Sources */,
+				D7A3AAD3E2A780CFB3848CBB /* OutsideClickMonitor.swift in Sources */,
 				B5D94BD8565D000C82F0E100 /* StatusBarController.swift in Sources */,
 				8B5898397D4B8CE9A4EE4135 /* TrayController.swift in Sources */,
 				1CCF9582FFB0FFC69AA17471 /* TrayFoldApp.swift in Sources */,

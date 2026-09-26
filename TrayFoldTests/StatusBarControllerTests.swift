@@ -22,6 +22,14 @@ struct StatusBarControllerTests {
         #expect(StatusBarController.clickAction(for: .leftMouseUp, modifiers: [.control], granted: true) == .menu)
     }
 
+    /// VoiceOver / Accessibility presses have no mouse click behind them: act like a left-click.
+    @Test func pressWithoutAMouseClickActsLikeALeftClick() {
+        #expect(StatusBarController.clickAction(for: nil, modifiers: [], granted: true) == .tray)
+        #expect(StatusBarController.clickAction(for: nil, modifiers: [], granted: false) == .menu)
+        // A key event (say ⌃ held for a VoiceOver command) isn't a ⌃-click.
+        #expect(StatusBarController.clickAction(for: .keyDown, modifiers: [.control], granted: true) == .tray)
+    }
+
     /// The tray would be empty without the permission; the menu has the button to allow it.
     @Test func everyClickOpensTheMenuUntilAllowed() {
         #expect(StatusBarController.clickAction(for: .leftMouseUp, modifiers: [], granted: false) == .menu)

@@ -32,8 +32,8 @@ final class DividerController: NSObject {
     private let statusItem: NSStatusItem
     private let chevronAutosaveName: String
     private let defaults: UserDefaults
-    /// Watches clicks in other apps while collapsed; see `watchForClickOutside()`.
-    private var clickMonitor: Any?
+    /// Watches clicks in other apps while collapsed; see `refoldIfBelowMenuBar()`.
+    private let outsideClicks = OutsideClickMonitor()
 
     /// Create before the chevron's status item, so `seedPositions` runs before
     /// macOS reads either item's stored position.
@@ -70,10 +70,10 @@ final class DividerController: NSObject {
             Self.logger.error("Not hiding icons: the divider is right of the chevron. ⌘-drag it back to the chevron's left.")
             collapse()
             // Re-folding on a click would only fail again, once per click.
-            stopWatchingClicks()
+            outsideClicks.stop()
             return
         }
-        stopWatchingClicks()
+        outsideClicks.stop()
         isExpanded = true
         statusItem.length = Self.length(isExpanded: true)
         guard let button = statusItem.button else { return }
@@ -96,38 +96,24 @@ final class DividerController: NSObject {
         // Draws the line dimmed, so it reads as a guide rather than a button.
         button.appearsDisabled = true
         Self.logger.notice("Divider collapsed (icons shown)")
-        watchForClickOutside()
+        // Mouse-*up*, so a ⌘-drag that ends in the bar doesn't count.
+        outsideClicks.start([.leftMouseUp, .rightMouseUp]) { [weak self] in self?.refoldIfBelowMenuBar() }
     }
 
     /// Safety net for a crowded bar: with every icon shown, macOS may drop TrayFold's own
     /// chevron and divider out of sight, leaving no button to fold them back. So the
     /// first click below the menu bar (the user is done ⌘-dragging) folds everything away.
-    /// A global monitor sees only other apps' clicks (never TrayFold's menu or popup) and,
-    /// for mouse clicks, needs no extra permission. Mouse-*up*, so a ⌘-drag that ends in
-    /// the bar doesn't count. It exists only while collapsed.
-    private func watchForClickOutside() {
-        guard clickMonitor == nil else { return }
-        clickMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseUp, .rightMouseUp]) { [weak self] _ in
-            // AppKit calls this on the main thread; tell Swift so.
-            MainActor.assumeIsolated {
-                let point = NSEvent.mouseLocation
-                // No screen contains the very top edge of the menu bar: count it as the bar.
-                guard let screen = NSScreen.screens.first(where: { $0.frame.contains(point) }) else { return }
-                // The space macOS keeps free for the bar (33 pt with a notch); the nominal
-                // thickness is only a floor, for a bar set to hide automatically.
-                let barHeight = max(screen.frame.maxY - screen.visibleFrame.maxY, NSStatusBar.system.thickness)
-                if Self.isBelowMenuBar(point, screenFrame: screen.frame, menuBarHeight: barHeight) {
-                    Self.logger.notice("Clicked outside the menu bar while collapsed: folding icons away")
-                    self?.expand()
-                }
-            }
+    private func refoldIfBelowMenuBar() {
+        let point = NSEvent.mouseLocation
+        // No screen contains the very top edge of the menu bar: count it as the bar.
+        guard let screen = NSScreen.screens.first(where: { $0.frame.contains(point) }) else { return }
+        // The space macOS keeps free for the bar (33 pt with a notch); the nominal
+        // thickness is only a floor, for a bar set to hide automatically.
+        let barHeight = max(screen.frame.maxY - screen.visibleFrame.maxY, NSStatusBar.system.thickness)
+        if Self.isBelowMenuBar(point, screenFrame: screen.frame, menuBarHeight: barHeight) {
+            Self.logger.notice("Clicked outside the menu bar while collapsed: folding icons away")
+            expand()
         }
-    }
-
-    private func stopWatchingClicks() {
-        guard let clickMonitor else { return }
-        NSEvent.removeMonitor(clickMonitor)
-        self.clickMonitor = nil
     }
 
     /// Switches between `expand()` and `collapse()`.

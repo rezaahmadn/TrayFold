@@ -70,8 +70,10 @@ final class StatusBarController: NSObject, NSMenuDelegate {
     /// Left-click opens the tray; right-click or ⌃-click (the Mac's other right-click)
     /// opens the menu. Without the Accessibility permission the tray would be empty,
     /// so every click opens the menu, which has the button to allow it.
-    static func clickAction(for type: NSEvent.EventType, modifiers: NSEvent.ModifierFlags, granted: Bool) -> ClickAction {
-        let wantsMenu = type == .rightMouseUp || modifiers.contains(.control)
+    /// `type` is nil when the press wasn't a mouse click on the chevron (VoiceOver,
+    /// Accessibility, `performClick`): that counts as a plain left-click.
+    static func clickAction(for type: NSEvent.EventType?, modifiers: NSEvent.ModifierFlags, granted: Bool) -> ClickAction {
+        let wantsMenu = type == .rightMouseUp || (type == .leftMouseUp && modifiers.contains(.control))
         return granted && !wantsMenu ? .tray : .menu
     }
 
@@ -89,9 +91,11 @@ final class StatusBarController: NSObject, NSMenuDelegate {
     }
 
     @objc private func chevronClicked(_ sender: NSStatusBarButton) {
-        guard let event = NSApp.currentEvent else { return }
+        // Only trust the current event if it's the click on this button; a press from
+        // VoiceOver or Accessibility may leave no event, or an older one from elsewhere.
+        let event = NSApp.currentEvent.flatMap { $0.window == sender.window ? $0 : nil }
         permission.refresh()
-        switch Self.clickAction(for: event.type, modifiers: event.modifierFlags, granted: permission.isGranted) {
+        switch Self.clickAction(for: event?.type, modifiers: event?.modifierFlags ?? [], granted: permission.isGranted) {
         case .tray:
             tray.toggle(relativeTo: sender)
         case .menu:

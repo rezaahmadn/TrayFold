@@ -8,9 +8,9 @@ A left-click on the chevron now opens the tray: an `NSPopover` with a SwiftUI gr
 | Metric | Predicted (Plan) | Actual |
 |---|---|---|
 | Complexity | Medium | Medium |
-| Files Changed | 11 | 12 (2 new sources, 1 new test file, 3 updated sources, 2 updated tests, README, project, plan, report) |
-| Swift (app) | ≤ ~1,000 lines | **1,055** by `wc -l` (+286 over main's 769), 661 lines of actual code (no comments or blank lines) |
-| Unit tests | ~12 new | 12 new (44 total, 7 suites) |
+| Files Changed | 11 | 13 (3 new sources, 1 new test file, 3 updated sources, 2 updated tests, README, project, plan, report) |
+| Swift (app) | ≤ ~1,000 lines | **1,065** by `wc -l` (+296 over main's 769), 663 lines of actual code (no comments or blank lines) |
+| Unit tests | ~12 new | 13 new (45 total, 7 suites) |
 
 ## Measurements (author's Mac, macOS 26.7, 14" MacBook Pro, 1512 × 982 pt)
 
@@ -44,8 +44,8 @@ Screenshots (session scratchpad, not committed): `/private/tmp/claude-501/-Users
 | Level | Status | Notes |
 |---|---|---|
 | Static Analysis (clean build) | [done] Pass | 0 errors, 0 warnings (Swift 6, strict concurrency complete) |
-| Unit Tests (local, signed) | [done] Pass | `✔ Test run with 44 tests in 7 suites passed`; the real-AX test ran |
-| Unit Tests (CI-like, ad-hoc) | [done] Pass | 44 passed, `findsControlCenterItems()` skipped as designed |
+| Unit Tests (local, signed) | [done] Pass | `✔ Test run with 45 tests in 7 suites passed`; the real-AX test ran |
+| Unit Tests (CI-like, ad-hoc) | [done] Pass | 45 passed, `findsControlCenterItems()` skipped as designed |
 | Left-click → tray | [done] Pass | Popup under the chevron with exactly the hidden items |
 | Click chevron again → closes | [done] Pass | No re-open (verified without a guard) |
 | Click in another app → closes | [done] Pass | After the amendment (global mouse-down monitor) |
@@ -61,13 +61,14 @@ Screenshots (session scratchpad, not committed): `/private/tmp/claude-501/-Users
 
 | File | Action |
 |---|---|
-| `TrayFold/TrayController.swift` | CREATED (129 lines) |
+| `TrayFold/TrayController.swift` | CREATED (120 lines) |
 | `TrayFold/TrayView.swift` | CREATED (73 lines) |
+| `TrayFold/OutsideClickMonitor.swift` | CREATED (29 lines, review fix) |
 | `TrayFold/StatusBarController.swift` | UPDATED (click routing, menu on demand) |
 | `TrayFold/DividerController.swift` | UPDATED (re-fold monitor + `isBelowMenuBar`) |
 | `TrayFold/AppDelegate.swift` | UPDATED (creates the tray; `onChange` logs and updates it) |
 | `TrayFoldTests/TrayControllerTests.swift` | CREATED (8 tests) |
-| `TrayFoldTests/StatusBarControllerTests.swift` | UPDATED (+3 tests) |
+| `TrayFoldTests/StatusBarControllerTests.swift` | UPDATED (+4 tests) |
 | `TrayFoldTests/DividerControllerTests.swift` | UPDATED (+1 test) |
 | `README.md` | UPDATED (status, Usage section) |
 | `TrayFold.xcodeproj/project.pbxproj` | REGENERATED |
@@ -78,7 +79,11 @@ Screenshots (session scratchpad, not committed): `/private/tmp/claude-501/-Users
 - **No re-open guard.** The plan's GOTCHA (a transient popover closing on mouse-down and re-opening on mouse-up) didn't happen. The second chevron click simply closes it, so the guard code was removed.
 - **Labels don't trim whitespace.** `AXElement.string` already maps empty titles to nil, and the author's items have no whitespace-only titles.
 - **Empty-state text broken into two lines by hand**, because automatic wrapping split "⌘-drag" at its hyphen.
-- **Line budget exceeded**: 1,055 lines by `wc -l` against the ~1,000 target. About 37 % of that is comments (written for a reader new to Swift) and blank lines. The actual code is 661 lines. Phases 5 and 6 will add more; the coordinating agent may want to restate the metric as code lines or trim comments.
+- **Line budget exceeded**: 1,065 lines by `wc -l` against the ~1,000 target. About 38 % of that is comments (written for a reader new to Swift) and blank lines. The actual code is 663 lines. Phases 5 and 6 will add more; the coordinating agent may want to restate the metric as code lines or trim comments.
+
+## Review fixes (PR #4 code review)
+- **MEDIUM: chevron presses that aren't a mouse click.** `chevronClicked` returned early when `NSApp.currentEvent` was nil, and otherwise trusted whatever event was current. Now it uses the event only if it belongs to the chevron's window. `clickAction(for:modifiers:granted:)` takes an optional event type, and anything that isn't a left or right mouse-up counts as a plain left-click: the tray when Accessibility is allowed, the menu otherwise. ⌃ only means "menu" on a mouse click. New test: `pressWithoutAMouseClickActsLikeALeftClick`. Runtime: an `AXPress` on the chevron (no mouse event) opens the tray (`fix2-axpress.png`).
+- **LOW: duplicated global-monitor code.** New `OutsideClickMonitor` (`start(events, handler)` with a double-start guard, `stop()`, and a main-actor `isolated deinit` that stops it) is used by both `TrayController` (mouse-down, closes the popup) and `DividerController` (mouse-up, re-folds). Behaviour is unchanged. Re-verified at runtime: the popup closes on a click in another app, and after "Show Hidden Icons" a click on empty menu bar space is ignored while a click below the bar re-folds (`fix2-outside.png`, `fix2-refold.png`). The line count went up by 10 rather than down: the new file's import, doc comments and blank lines outweigh the removed duplication. Actual code is +2 lines.
 
 ## Issues Encountered
 - Clicking an entry in the popup makes TrayFold the active app (the Music toolbar dims), because a click in any of an app's windows activates it. Harmless now; Phase 5 should check that it doesn't interfere with the pressed item's menu.
@@ -97,7 +102,7 @@ Screenshots (session scratchpad, not committed): `/private/tmp/claude-501/-Users
 | Test File | Tests | Coverage |
 |---|---|---|
 | `TrayFoldTests/TrayControllerTests.swift` | 8 | Folded items (divider, notch, off-screen; visible excluded; order; empty; no divider yet), labels (title, description up to the comma, app name), tooltip, grid rows 0/1/5/6/7/12 |
-| `TrayFoldTests/StatusBarControllerTests.swift` | +3 | Left → tray, right / ⌃-left → menu, any click → menu without permission |
+| `TrayFoldTests/StatusBarControllerTests.swift` | +4 | Left → tray, right / ⌃-left → menu, any click → menu without permission, a press with no mouse click (VoiceOver / AXPress) acts like a left-click |
 | `TrayFoldTests/DividerControllerTests.swift` | +1 | Re-fold only for clicks below the menu bar (incl. a second display) |
 
 ## Next Steps
