@@ -14,15 +14,17 @@ final class TrayController {
 
     private let store: MenuBarItemStore
     private let divider: DividerController
+    private let reveal: RevealController
     private let popover = NSPopover()
     /// Hosts the SwiftUI grid. Its `rootView` is replaced whenever the list changes.
     private let content = NSHostingController(rootView: TrayView(items: [], onSelect: { _ in }))
     /// Watches clicks in other apps while the popup is open; see `toggle(relativeTo:)`.
     private let outsideClicks = OutsideClickMonitor()
 
-    init(store: MenuBarItemStore, divider: DividerController) {
+    init(store: MenuBarItemStore, divider: DividerController, reveal: RevealController) {
         self.store = store
         self.divider = divider
+        self.reveal = reveal
         // The popup takes the grid's own size and follows it as rows come and go.
         content.sizingOptions = .preferredContentSize
         popover.contentViewController = content
@@ -59,12 +61,17 @@ final class TrayController {
         if popover.isShown { render() }
     }
 
-    /// Where every tray click ends up.
+    /// Where every tray click ends up: opens the item's own menu.
     func activate(_ item: MenuBarItem) {
         close()
         Self.logger.notice("Tray entry clicked: \(item.owner.bundleID ?? item.owner.name, privacy: .public)")
-        // Phase 5: collapse the divider, wait until the item is on-screen, press it
-        // (AXPress, off the main actor), and fold it away again once its menu closes.
+        // The click inside the popup made TrayFold the active app (measured). Hiding it
+        // hands focus back to the app the user was in, so typing goes where it went before.
+        // The switch takes ~30 ms; the item needs ~110 ms to reach the screen, so it's done
+        // before the item's menu opens.
+        if NSApp.isActive { NSApp.hide(nil) }
+        guard let screen = NSScreen.screens.first else { return }
+        reveal.open(item, screen: screen.frame, notch: MenuBarLayout.notchRange(of: screen))
     }
 
     /// Recomputes which items are hidden and hands them to the grid.
