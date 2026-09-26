@@ -11,7 +11,3 @@ for size in 16 32 128 256 512; do
   render Design/AppIcon.svg "$ASSETS/AppIcon.appiconset/AppIcon-$size.png" "$size"
   render Design/AppIcon.svg "$ASSETS/AppIcon.appiconset/AppIcon-$size@2x.png" $((size * 2))
 done
-
-# Menu bar glyph: 18 pt tall, so 18 px at 1x and 36 px at 2x (Retina).
-render Design/MenuBarIcon.svg "$ASSETS/MenuBarIcon.imageset/MenuBarIcon.png" 18
-render Design/MenuBarIcon.svg "$ASSETS/MenuBarIcon.imageset/MenuBarIcon@2x.png" 36

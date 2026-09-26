@@ -9,6 +9,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     // Kept alive for the app's lifetime; releasing them would remove the menu bar item.
     private var permission: AccessibilityPermission?
     private var statusBar: StatusBarController?
+    private var divider: DividerController?
     private var menuBarItems: MenuBarItemStore?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -22,7 +23,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             // switched off, to the Accessibility list, so the user only flips the switch.
             permission.promptIfNeeded()
         }
-        statusBar = StatusBarController(permission: permission)
+        // The divider first: it seeds both items' positions before either exists,
+        // so a first launch puts it right next to the chevron. Starts expanded.
+        let divider = DividerController(chevronAutosaveName: StatusBarController.autosaveName)
+        statusBar = StatusBarController(permission: permission, divider: divider)
+        self.divider = divider
         self.permission = permission
 
         let menuBarItems = MenuBarItemStore()
@@ -31,5 +36,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         menuBarItems.start()
         self.menuBarItems = menuBarItems
+    }
+
+    /// Called when the user opens TrayFold again while it's running (Spotlight,
+    /// Finder). On a crowded notched bar, showing hidden icons can push the chevron
+    /// itself out of sight; opening the app again folds everything back.
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        divider?.expand()
+        return false
     }
 }
