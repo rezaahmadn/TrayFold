@@ -145,8 +145,8 @@ Divider + chevron + popup grid (app icon / label) + reveal-and-press on click, A
 | 3 | Discovery | Accessibility enumeration of menu bar items + event-driven refresh | complete | with 2 | 1 | [plan](../plans/completed/phase-3-discovery.plan.md) · [report](../reports/phase-3-discovery-report.md) |
 | 4 | Tray popup | Chevron + popup grid of hidden items (app icon / label) | complete | - | 2, 3 | [plan](../plans/completed/phase-4-tray-popup.plan.md) · [report](../reports/phase-4-tray-popup-report.md) |
 | 5 | Reveal & press | Click → collapse → `AXPress` → re-hide on menu close | complete | - | 4 | [plan](../plans/completed/phase-5-reveal-and-press.plan.md) · [report](../reports/phase-5-reveal-and-press-report.md) |
-| 6 | Live icons toggle | Optional Screen Recording capture of item images, off by default | pending | with 7 | 4 | - |
-| 7 | Public release | README usage/build docs, GitHub release zip, issue templates | in-progress | with 6 | 5 | [plan](../plans/completed/phase-7-public-release.plan.md) |
+| 6 | Live icons toggle | Optional Screen Recording capture of item images, off by default | complete | with 7 | 4 | [plan](../plans/completed/phase-6-live-icons.plan.md) · [report](../reports/phase-6-live-icons-report.md) |
+| 7 | Public release | README usage/build docs, GitHub release zip, issue templates | complete | with 6 | 5 | [plan](../plans/completed/phase-7-public-release.plan.md) · [report](../reports/phase-7-public-release-report.md) |
 
 ### Phase Details
 
@@ -208,6 +208,7 @@ Phases 2 and 3 are independent (one writes to the menu bar, the other only reads
 | Visibility | Public on GitHub from the PRD stage | Publish after MVP | Author's choice |
 | Implementation method | Subagents per phase | Single-thread implementation | Author's instruction; phases 2/3 and 6/7 parallelize |
 | Size budget | Count code lines only (~660 after phase 4) | Count all lines incl. comments (1,065 after phase 4) | Author is new to Swift; explanatory comments are kept, not traded for budget |
+| Live icons capture | ScreenCaptureKit one-shot of the item's window, only while it is on-screen; cached in memory | Capture off-screen items (fails, -3811); `CGWindowListCreateImage` (obsoleted) | macOS can't capture folded windows; each capture shows the purple indicator ~4 s |
 | Popup activation | Popup never activates TrayFold; a global mouse monitor (only while open) closes it | `NSApp.activate()` + transient popover | Keeps focus in the user's app; no extra permission |
 
 ---
@@ -232,4 +233,4 @@ Phases 2 and 3 are independent (one writes to the menu bar, the other only reads
 ---
 
 *Generated: 2026-09-25*
-*Status: DRAFT - needs validation*
+*Status: all phases implemented (v0.1.0 ready to tag); daily-use validation pending*
