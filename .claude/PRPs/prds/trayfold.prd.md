@@ -38,20 +38,20 @@ We'll know we're right when the author uninstalls Thaw and uses TrayFold daily f
 | Hidden items reachable | 100% of the author's hidden third-party items open their real, visible menu | Manual check against every item placed in the tray |
 | Clicks to reach a hidden item's menu | ≤ 2 (chevron, then item) | Manual |
 | Permissions requested by default | Accessibility only | System Settings → Privacy & Security |
-| Network access | None (no network code, no updater) | `lsof -i -c TrayFold` shows nothing; code review |
+| Network access | None (no network code, no updater) | `lsof -a -i -c TrayFold` shows nothing; code review |
 | Idle CPU / memory | ~0% CPU, < 40 MB RSS | Activity Monitor after 1 hour idle |
 | Codebase size | < ~1,000 lines of Swift code (excluding comments and blank lines), zero third-party dependencies | code-line count of `TrayFold/`, `project.yml` |
 | Daily use | 2 weeks without reverting to Thaw | Self-report |
 
 ## Open Questions
 
-- [ ] How to reliably detect that a pressed item's menu has closed so TrayFold can re-hide it (AX `AXMenuClosed` notification, polling the menu child, or re-hide on the next tray open)?
+- [x] How to reliably detect that a pressed item's menu has closed so TrayFold can re-hide it (AX `AXMenuClosed` notification, polling the menu child, or re-hide on the next tray open)? *Answered (phase 5): poll at 5 Hz, only while a revealed item is open: the item's `AXSelected`, its `AXMenu` child having a size, or the app having more panel windows (`AXSystemDialog`/`AXDialog`) than before the press. `AXMenuClosed` alone isn't enough (Control Center, panels and popovers don't send it). ≤ 0.2 % CPU while open, 0 % otherwise.*
 - [ ] Can the Battery item (and other Control Center items) be ⌘-dragged past a third-party divider on macOS 26? This was the failure seen in Thaw. *Partly answered (phase 2): Wi-Fi (Control Center) moved past TrayFold's divider and hid; Battery not tested (not in this Mac's bar).*
-- [ ] `AXPress` on a menu bar item blocks for ~1.5 s while the menu is open (spike returned `kAXErrorCannotComplete`, -25204). Confirm that running it off the main thread keeps the UI responsive.
-- [ ] Where does a revealed item land when the bar is crowded: under the notch (menu still visible, since menus drop below the bar) or off the left edge (menu invisible)? May need to collapse only part of the divider. *Phase 2 finding: fully collapsing on a crowded bar let macOS drop TrayFold's own chevron and divider out of sight (AX still reported them). Phase 4/5 must reveal only what's needed and re-fold automatically; reopening the app re-folds today. Phase 4 added an automatic re-fold on the first click outside the menu bar while collapsed.*
+- [x] `AXPress` on a menu bar item blocks for ~1.5 s while the menu is open (spike returned `kAXErrorCannotComplete`, -25204). Confirm that running it off the main thread keeps the UI responsive. *Answered (phase 5): `AXPress` runs off the main actor with a 0.25 s per-element timeout; NSMenu apps return -25204 after exactly 0.25 s with the menu already open, and the UI stays responsive.*
+- [x] Where does a revealed item land when the bar is crowded: under the notch (menu still visible, since menus drop below the bar) or off the left edge (menu invisible)? May need to collapse only part of the divider. *Phase 2 finding: fully collapsing on a crowded bar let macOS drop TrayFold's own chevron and divider out of sight (AX still reported them). Phase 4/5 must reveal only what's needed and re-fold automatically; reopening the app re-folds today. Phase 4 added an automatic re-fold on the first click outside the menu bar while collapsed.* *Answered (phase 5): partial collapse, just enough to bring the item on-screen (full collapse as a fallback); items already on-screen are pressed in place. Any on-screen position works, including under or left of the notch, because menus drop below the bar.*
 - [x] How to keep a stable code-signing identity so macOS doesn't drop the Accessibility grant on every rebuild without a paid developer account? *Answered (phase 1): local self-signed certificate via `Scripts/setup-signing.sh`.*
 - [ ] Does the divider approach survive macOS 27's single-window menu bar?
-- [ ] Unsigned builds trigger Gatekeeper warnings for other users. Is "build from source" acceptable for a public audience?
+- [ ] Unsigned builds trigger Gatekeeper warnings for other users. Is "build from source" acceptable for a public audience? *Partly answered (phase 7): releases ship an ad-hoc signed zip built by CI on each `v*` tag; the README walks through Open Anyway / `xattr`, and build from source stays documented. Whether that's acceptable to users needs feedback after release.*
 
 ---
 
@@ -144,9 +144,9 @@ Divider + chevron + popup grid (app icon / label) + reveal-and-press on click, A
 | 2 | Divider | Own divider status item; expand/collapse; persists across relaunch | complete | with 3 | 1 | [plan](../plans/completed/phase-2-divider.plan.md) · [report](../reports/phase-2-divider-report.md) |
 | 3 | Discovery | Accessibility enumeration of menu bar items + event-driven refresh | complete | with 2 | 1 | [plan](../plans/completed/phase-3-discovery.plan.md) · [report](../reports/phase-3-discovery-report.md) |
 | 4 | Tray popup | Chevron + popup grid of hidden items (app icon / label) | complete | - | 2, 3 | [plan](../plans/completed/phase-4-tray-popup.plan.md) · [report](../reports/phase-4-tray-popup-report.md) |
-| 5 | Reveal & press | Click → collapse → `AXPress` → re-hide on menu close | pending | - | 4 | - |
+| 5 | Reveal & press | Click → collapse → `AXPress` → re-hide on menu close | complete | - | 4 | [plan](../plans/completed/phase-5-reveal-and-press.plan.md) · [report](../reports/phase-5-reveal-and-press-report.md) |
 | 6 | Live icons toggle | Optional Screen Recording capture of item images, off by default | pending | with 7 | 4 | - |
-| 7 | Public release | README usage/build docs, GitHub release zip, issue templates | pending | with 6 | 5 | - |
+| 7 | Public release | README usage/build docs, GitHub release zip, issue templates | in-progress | with 6 | 5 | [plan](../plans/completed/phase-7-public-release.plan.md) |
 
 ### Phase Details
 

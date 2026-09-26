@@ -1,0 +1,61 @@
+name: Bug report
+description: Something in the tray, the divider or a revealed menu doesn't work.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+      description: Steps to reproduce help a lot (for example "folded Docker, clicked it in the tray, its menu opened off-screen").
+    validations:
+      required: true
+  - type: input
+    id: item
+    attributes:
+      label: Which menu bar item?
+      description: The app it belongs to (for example Docker, 1Password, Wi-Fi from Control Center). "All of them" is a fine answer.
+    validations:
+      required: true
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version
+      description: Apple menu → About This Mac (for example 26.7).
+    validations:
+      required: true
+  - type: input
+    id: mac
+    attributes:
+      label: Mac model and display
+      description: For example "14-inch MacBook Pro, built-in notched display" or "MacBook Air + external monitor".
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: TrayFold version
+      description: Release zip version, or the commit you built from.
+  - type: dropdown
+    id: managers
+    attributes:
+      label: Other menu bar managers running
+      description: They move the same icons around and can conflict with TrayFold.
+      multiple: true
+      options:
+        - None
+        - Thaw
+        - Ice
+        - Bartender
+        - Hidden Bar
+        - Other (say which above)
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: TrayFold log
+      description: |
+        Reproduce the problem, then run this in Terminal and paste the output:
+        `/usr/bin/log show --predicate 'subsystem == "com.rezaahmadn.TrayFold"' --last 5m`
+        TrayFold logs app bundle ids, not what menu items say, but please read it before pasting.
+      render: text

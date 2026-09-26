@@ -1,0 +1,79 @@
+# Builds an ad-hoc signed TrayFold.app on every v* tag and attaches it to a GitHub Release.
+# No Apple Developer account involved: downloaders must allow the app once in
+# System Settings → Privacy & Security (see README).
+#
+# Publish:  git tag v0.1.0 && git push origin v0.1.0
+# Dry run:  Actions → Release → Run workflow on a branch. Builds the same zip and keeps it
+#           as a workflow artifact instead of publishing a release.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write   # needed to create the release and upload the zip
+
+jobs:
+  build:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Show Xcode
+        run: xcodebuild -version
+
+      - name: Version
+        id: version
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          if [ "$REF_TYPE" = tag ]; then
+            VERSION="${REF_NAME#v}"
+          else
+            # Manual run on a branch: project.yml's version, marked as a dev build.
+            VERSION="$(awk -F'"' '/MARKETING_VERSION:/ {print $2; exit}' project.yml)-dev"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Building TrayFold $VERSION"
+
+      - name: Build (Release, ad-hoc signed)
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        # CODE_SIGN_INJECT_BASE_ENTITLEMENTS=NO: an ad-hoc ("Sign to Run Locally") build
+        # otherwise gets get-task-allow, which would let other processes attach to an app
+        # that holds the Accessibility permission. The release needs no entitlements.
+        run: |
+          xcodebuild -project TrayFold.xcodeproj -scheme TrayFold -configuration Release \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY=- CODE_SIGNING_ALLOWED=YES CODE_SIGN_INJECT_BASE_ENTITLEMENTS=NO \
+            MARKETING_VERSION="$VERSION" CURRENT_PROJECT_VERSION="$GITHUB_RUN_NUMBER" \
+            build
+
+      - name: Verify signature
+        run: codesign --verify --deep --strict --verbose=2 build/Build/Products/Release/TrayFold.app
+
+      - name: Zip
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          # ditto keeps the bundle and its signature intact; `zip -r` can break it.
+          ditto -c -k --keepParent build/Build/Products/Release/TrayFold.app "TrayFold-$VERSION.zip"
+          ls -la TrayFold-*.zip
+          shasum -a 256 TrayFold-*.zip
+
+      - name: Publish release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v3
+        with:
+          files: TrayFold-*.zip
+          generate_release_notes: true
+
+      - name: Keep the zip (manual run on a branch)
+        if: github.ref_type != 'tag'
+        uses: actions/upload-artifact@v7
+        with:
+          name: TrayFold-${{ steps.version.outputs.version }}
+          path: TrayFold-*.zip

@@ -1,0 +1,24 @@
+name: Feature request
+description: Suggest something TrayFold should do.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would it solve?
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like TrayFold to do?
+    validations:
+      required: true
+  - type: checkboxes
+    id: principles
+    attributes:
+      label: TrayFold stays small
+      description: TrayFold has no network access and asks only for Accessibility by default. Anything beyond that is an off-by-default option, if it's added at all.
+      options:
+        - label: I've read the principles in the README.
+          required: true
