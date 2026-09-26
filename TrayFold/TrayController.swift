@@ -15,16 +15,18 @@ final class TrayController {
     private let store: MenuBarItemStore
     private let divider: DividerController
     private let reveal: RevealController
+    private let liveIcons: LiveIcons
     private let popover = NSPopover()
     /// Hosts the SwiftUI grid. Its `rootView` is replaced whenever the list changes.
     private let content = NSHostingController(rootView: TrayView(items: [], onSelect: { _ in }))
     /// Watches clicks in other apps while the popup is open; see `toggle(relativeTo:)`.
     private let outsideClicks = OutsideClickMonitor()
 
-    init(store: MenuBarItemStore, divider: DividerController, reveal: RevealController) {
+    init(store: MenuBarItemStore, divider: DividerController, reveal: RevealController, liveIcons: LiveIcons) {
         self.store = store
         self.divider = divider
         self.reveal = reveal
+        self.liveIcons = liveIcons
         // The popup takes the grid's own size and follows it as rows come and go.
         content.sizingOptions = .preferredContentSize
         popover.contentViewController = content
@@ -35,6 +37,10 @@ final class TrayController {
     /// Opens the popup under `button` (the chevron), or closes it if it's open.
     func toggle(relativeTo button: NSView) {
         if popover.isShown { return close() }
+        // Live images are drawn for the menu bar, whose light or dark look follows the
+        // wallpaper, not the system setting; the chevron has the bar's look. Matching it
+        // keeps black glyphs off a dark popup. Otherwise the popup follows the system.
+        popover.appearance = liveIcons.isActive ? button.effectiveAppearance : nil
         render()
         // TrayFold never becomes the active app (the user's app keeps focus), so
         // `.transient` doesn't hear about clicks elsewhere. A global monitor does.
@@ -47,7 +53,14 @@ final class TrayController {
         // Items may have moved or appeared since the last scan (~20 ms when warm).
         Task {
             await store.refresh()
-            render()
+            liveIcons.forgetAll(except: store.items)
+            // The user may have closed the popup meanwhile: then there's nothing to redraw
+            // or capture for.
+            guard popover.isShown, let screen = NSScreen.screens.first else { return }
+            let items = render()
+            // Only items that are on-screen right now (under the notch, or all icons shown);
+            // usually none, and then nothing is captured.
+            if await liveIcons.capture(items, screen: screen.frame), popover.isShown { render() }
         }
     }
 
@@ -75,16 +88,19 @@ final class TrayController {
     }
 
     /// Recomputes which items are hidden and hands them to the grid.
-    private func render() {
+    /// Returns the items it listed.
+    @discardableResult
+    private func render() -> [MenuBarItem] {
         // Accessibility measures x from the primary display (the notched one on a MacBook).
-        guard let screen = NSScreen.screens.first else { return }
+        guard let screen = NSScreen.screens.first else { return [] }
         let items = Self.foldedItems(
             store.items,
             dividerMinX: divider.screenMinX,
             notchRange: MenuBarLayout.notchRange(of: screen),
             screenMinX: screen.frame.minX
         )
-        content.rootView = TrayView(items: items) { [weak self] item in self?.activate(item) }
+        content.rootView = TrayView(items: items, liveImages: liveIcons.images) { [weak self] item in self?.activate(item) }
+        return items
     }
 
     // MARK: - Pure helpers (unit-tested without a menu bar)

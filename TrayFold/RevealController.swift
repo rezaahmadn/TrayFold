@@ -65,6 +65,9 @@ final class RevealController {
     }
     /// Called on every state change (used by the tests).
     var onStateChange: ((State) -> Void)?
+    /// Called once the item is pressed, while it's on-screen with its menu open
+    /// (`LiveIcons` captures its image then).
+    var onMenuOpen: ((MenuBarItem) -> Void)?
 
     private let system: System
     /// The running session, if any.
@@ -123,6 +126,7 @@ final class RevealController {
             return refold(because: "pressing \(name) failed (\(result.rawValue))")
         }
         state = .menuOpen
+        onMenuOpen?(item)
         refold(because: await waitUntilClosed(item, windowsBefore: windowsBefore))
     }
 

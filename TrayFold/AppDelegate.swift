@@ -29,9 +29,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let divider = DividerController(chevronAutosaveName: StatusBarController.autosaveName)
         let menuBarItems = MenuBarItemStore()
         let reveal = RevealController(system: .live(divider: divider))
+        // Off by default; while off it never touches Screen Recording.
+        let liveIcons = LiveIcons()
+        // An item opened from the tray is on-screen for a moment: the one chance to capture
+        // a folded item's image. Does nothing while live icons are off.
+        reveal.onMenuOpen = { item in
+            guard let screen = NSScreen.screens.first else { return }
+            Task { _ = await liveIcons.capture([item], screen: screen.frame) }
+        }
         // Kept alive by the status bar, which opens it.
-        let tray = TrayController(store: menuBarItems, divider: divider, reveal: reveal)
-        statusBar = StatusBarController(permission: permission, divider: divider, tray: tray)
+        let tray = TrayController(store: menuBarItems, divider: divider, reveal: reveal, liveIcons: liveIcons)
+        statusBar = StatusBarController(permission: permission, divider: divider, tray: tray, liveIcons: liveIcons)
         self.divider = divider
         self.reveal = reveal
         self.permission = permission
