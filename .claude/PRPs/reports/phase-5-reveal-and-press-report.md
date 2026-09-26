@@ -116,11 +116,16 @@ Clicking an entry in the tray now opens that app's real menu, visibly, and the b
 - Status item windows on macOS 26 all belong to the Control Center process (`CGWindowList` owner), each item's window is its length + 16 pt wide, and hidden ones are ordered out rather than moved.
 - The Accessibility tree of TrayFold's own popover isn't reachable through its app's `AXWindows` (only by hit-testing), which matters for anyone scripting TrayFold with VoiceOver-style tools.
 
+## Review fixes (PR #6 code review)
+- **HIGH: a superseded session could still press its item.** `run()` checked cancellation only inside the polling loops, not between `reveal()` returning and `AXPress`. A second tray click or quitting while an item was revealed but not yet pressed could still press the old item (a Control Center item would toggle something). `run()` now checks `Task.isCancelled` right after the reveal and again immediately before the press, and folds back with "cancelled" instead. New tests hold a session between reveal and press (the check just before the press waits on a semaphore) and then either start a second `open()` (`supersededItemIsNeverPressed`) or call `stop()` (`stopBeforeThePressMeansNoPress`); both assert the first item is never pressed. Both fail when the pre-press check is removed.
+- **Runtime re-check.** 1Password from the tray: pressed 134 ms after the click, Escape closes it, bar folds back. Two rapid clicks on different entries (WPS, then 1Password as fast as the popup reopens, ~0.75 s apart): the WPS session ended as "cancelled" and only 1Password was pressed after the second click. Through the real UI the second click can't land inside the ~140 ms reveal window, so WPS had already been pressed by then; its panel doesn't close when other menu bar items are clicked and stayed open next to 1Password's menu (closed afterwards by pressing WPS again). This is how WPS's panel behaves, not something the fix changed. A later option: have a superseded session close what it opened.
+- Tests: **61** (16 new in this phase), local and CI-like. App code: **856** code lines.
+
 ## Tests Written
 
 | Test File | Tests | Coverage |
 |---|---|---|
-| `TrayFoldTests/RevealControllerTests.swift` | 10 | Happy path and states; press in place; fallback to full collapse; never on-screen; app gone / AX off; press error; `.success` counts; grace time when nothing opens; second entry cancels the first and waits for the bar to settle; `stop()` folds back once |
+| `TrayFoldTests/RevealControllerTests.swift` | 12 | Happy path and states; press in place; fallback to full collapse; never on-screen; app gone / AX off; press error; `.success` counts; grace time when nothing opens; second entry cancels the first and waits for the bar to settle; `stop()` folds back once; no press after a second `open()` or `stop()` between reveal and press (review fix) |
 | `TrayFoldTests/MenuBarLayoutTests.swift` | +4 | Reveal length (partial, clamped, no notch, already on-screen), on-screen check |
 
 ## Next Steps

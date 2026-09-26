@@ -1,5 +1,6 @@
 import ApplicationServices
 import CoreGraphics
+import Dispatch
 import Synchronization
 import Testing
 @testable import TrayFold
@@ -27,8 +28,13 @@ struct RevealControllerTests {
             // What happened, in order.
             var events: [String] = []
             var sleeps: [Duration] = []
+            /// When set, the check just before the press stops at `gate` until the test
+            /// lets it go, holding the session between "revealed" and "pressed".
+            var holdBeforePress = false
+            var isHeld = false
         }
         let values = Mutex(Values())
+        let gate = DispatchSemaphore(value: 0)
 
         func update(_ change: (inout Values) -> Void) { values.withLock { change(&$0) } }
         var events: [String] { values.withLock { $0.events } }
@@ -53,7 +59,13 @@ struct RevealControllerTests {
                 press: { item in
                     self.values.withLock { $0.events.append("press \(item.owner.name)"); return $0.pressResult }
                 },
-                popupWindows: { _ in 0 },
+                popupWindows: { _ in
+                    // Runs on a background thread, so blocking here doesn't stall the test.
+                    if self.values.withLock({ $0.isHeld = $0.holdBeforePress; return $0.isHeld }) {
+                        self.gate.wait()
+                    }
+                    return 0
+                },
                 isShowingMenu: { _, _ in
                     self.values.withLock { values in
                         guard values.openChecks > 0 else { return false }
@@ -177,5 +189,40 @@ struct RevealControllerTests {
         #expect(controller.state == .idle)
         await session.value
         #expect(bar.events == ["shrink 49", "press 1Password", "refold"])
+    }
+
+    /// Waits until a session is held between reveal and press (see `holdBeforePress`).
+    func waitUntilHeld(_ bar: FakeBar) async {
+        while !bar.values.withLock({ $0.isHeld }) { await Task.yield() }
+    }
+
+    /// A second tray click lands while the first item is revealed but not yet pressed:
+    /// the first item must never be pressed (a Control Center item would toggle).
+    @Test func supersededItemIsNeverPressed() async {
+        let bar = FakeBar()
+        bar.update { $0.holdBeforePress = true }
+        let controller = RevealController(system: bar.system())
+        let first = controller.open(Self.item("Wi-Fi", x: 1226), screen: Self.screen, notch: 665...850)
+        await waitUntilHeld(bar)
+        bar.update { $0.holdBeforePress = false }
+        let second = controller.open(Self.item("Sound", x: 1264), screen: Self.screen, notch: 665...850)
+        bar.gate.signal()
+        await first.value
+        await second.value
+        #expect(bar.events == ["refold", "press Sound", "refold"])
+    }
+
+    /// Quitting while an item is revealed but not yet pressed.
+    @Test func stopBeforeThePressMeansNoPress() async {
+        let bar = FakeBar()
+        bar.update { $0.holdBeforePress = true }
+        let controller = RevealController(system: bar.system())
+        let session = controller.open(Self.item(), screen: Self.screen, notch: 665...850)
+        await waitUntilHeld(bar)
+        controller.stop()
+        bar.gate.signal()
+        await session.value
+        #expect(bar.events == ["shrink 49", "refold"])
+        #expect(controller.state == .idle)
     }
 }

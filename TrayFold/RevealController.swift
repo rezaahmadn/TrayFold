@@ -107,9 +107,13 @@ final class RevealController {
         guard await reveal(item, screen: screen, targetMinX: targetMinX) else {
             return refold(because: "\(name) never reached the screen")
         }
+        // Superseded (another tray click, quitting) while revealing: never press an item
+        // the user no longer asked for. A Control Center item would toggle something.
+        guard !Task.isCancelled else { return refold(because: "cancelled") }
         let popupWindows = system.popupWindows
         let press = system.press
         let windowsBefore = await background { popupWindows(item) }
+        guard !Task.isCancelled else { return refold(because: "cancelled") }
         // Its menu shows ~15–30 ms after this (measured), so this is the click-to-menu time.
         let milliseconds = Int((ContinuousClock.now - started) / .milliseconds(1))
         Self.logger.notice("Pressing \(name, privacy: .public) \(milliseconds, privacy: .public) ms after the click")
