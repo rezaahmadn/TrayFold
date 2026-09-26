@@ -4,7 +4,7 @@ A Windows-style system tray for the macOS menu bar, built for MacBooks with a no
 
 > **Status: pre-release (0.1.0).** The core loop works: fold icons away, open the tray, click an entry to get that app's real menu. It has been tested on one Mac so far (see [Known limitations](#known-limitations)).
 
-<p><img src="docs/tray.png" width="266" alt="The TrayFold tray popup listing three folded-away menu bar items: WPS Office, Bitwarden and 1Password, each with its app icon"></p>
+<p><img src="docs/tray.png" width="414" alt="The TrayFold tray popup listing five menu bar items with their app icons: Docker Desktop, a 25:00 timer, a battery meter, Wi-Fi and Sound"></p>
 
 ## The problem
 
@@ -35,7 +35,9 @@ On first launch macOS asks whether to allow it. Until you do, TrayFold shows a w
 
 ### Live icons (optional, off by default)
 
-The tray shows each app's own icon rather than a picture of its menu bar icon. An optional setting can show true-to-life menu bar icons instead. It's off by default, and only turning it on asks for the **Screen Recording** permission; with it off, TrayFold never asks.
+Right-click ⌄ → **Show Live Icons** makes the tray show each item's real menu bar image (Docker's status, a timer's digits) instead of its app icon. This is the only feature that needs **Screen Recording**: TrayFold asks for it only when you turn the option on, and never uses it while it's off.
+
+macOS can only capture an icon while it's on the screen, so TrayFold captures an item when you open it from the tray (or when the tray opens while icons are shown) and remembers the image; until then you see the app icon. Each capture makes macOS show a small purple dot next to Control Center for a few seconds, and macOS may ask about once a month whether TrayFold may keep recording. Captured images stay in memory only and are never saved or sent anywhere.
 
 ## Privacy
 
