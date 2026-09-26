@@ -46,10 +46,10 @@ We'll know we're right when the author uninstalls Thaw and uses TrayFold daily f
 ## Open Questions
 
 - [ ] How to reliably detect that a pressed item's menu has closed so TrayFold can re-hide it (AX `AXMenuClosed` notification, polling the menu child, or re-hide on the next tray open)?
-- [ ] Can the Battery item (and other Control Center items) be ⌘-dragged past a third-party divider on macOS 26? This was the failure seen in Thaw.
+- [ ] Can the Battery item (and other Control Center items) be ⌘-dragged past a third-party divider on macOS 26? This was the failure seen in Thaw. *Partly answered (phase 2): Wi-Fi (Control Center) moved past TrayFold's divider and hid; Battery not tested (not in this Mac's bar).*
 - [ ] `AXPress` on a menu bar item blocks for ~1.5 s while the menu is open (spike returned `kAXErrorCannotComplete`, -25204). Confirm that running it off the main thread keeps the UI responsive.
-- [ ] Where does a revealed item land when the bar is crowded: under the notch (menu still visible, since menus drop below the bar) or off the left edge (menu invisible)? May need to collapse only part of the divider.
-- [ ] How to keep a stable code-signing identity so macOS doesn't drop the Accessibility grant on every rebuild without a paid developer account (a local self-signed certificate?)
+- [ ] Where does a revealed item land when the bar is crowded: under the notch (menu still visible, since menus drop below the bar) or off the left edge (menu invisible)? May need to collapse only part of the divider. *Phase 2 finding: fully collapsing on a crowded bar let macOS drop TrayFold's own chevron and divider out of sight (AX still reported them). Phase 4/5 must reveal only what's needed and re-fold automatically; reopening the app re-folds today.*
+- [x] How to keep a stable code-signing identity so macOS doesn't drop the Accessibility grant on every rebuild without a paid developer account? *Answered (phase 1): local self-signed certificate via `Scripts/setup-signing.sh`.*
 - [ ] Does the divider approach survive macOS 27's single-window menu bar?
 - [ ] Unsigned builds trigger Gatekeeper warnings for other users. Is "build from source" acceptable for a public audience?
 
@@ -141,8 +141,8 @@ Divider + chevron + popup grid (app icon / label) + reveal-and-press on click, A
 | # | Phase | Description | Status | Parallel | Depends | PRP Plan |
 |---|-------|-------------|--------|----------|---------|----------|
 | 1 | Project skeleton | XcodeGen project, menu-bar-only app, stable local signing, Accessibility onboarding | complete | - | - | [plan](../plans/completed/phase-1-project-skeleton.plan.md) · [report](../reports/phase-1-project-skeleton-report.md) |
-| 2 | Divider | Own divider status item; expand/collapse; persists across relaunch | pending | with 3 | 1 | - |
-| 3 | Discovery | Accessibility enumeration of menu bar items + event-driven refresh | pending | with 2 | 1 | - |
+| 2 | Divider | Own divider status item; expand/collapse; persists across relaunch | complete | with 3 | 1 | [plan](../plans/completed/phase-2-divider.plan.md) · [report](../reports/phase-2-divider-report.md) |
+| 3 | Discovery | Accessibility enumeration of menu bar items + event-driven refresh | complete | with 2 | 1 | [plan](../plans/completed/phase-3-discovery.plan.md) · [report](../reports/phase-3-discovery-report.md) |
 | 4 | Tray popup | Chevron + popup grid of hidden items (app icon / label) | pending | - | 2, 3 | - |
 | 5 | Reveal & press | Click → collapse → `AXPress` → re-hide on menu close | pending | - | 4 | - |
 | 6 | Live icons toggle | Optional Screen Recording capture of item images, off by default | pending | with 7 | 4 | - |
