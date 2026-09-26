@@ -75,4 +75,20 @@ struct DividerControllerTests {
         #expect(!DividerController.isSafeToExpand(dividerPosition: 500, chevronPosition: 546))
         #expect(!DividerController.isSafeToExpand(dividerPosition: 546, chevronPosition: 546))
     }
+
+    /// The author's screen: 982 pt tall, menu bar 33 pt (y 949…982, AppKit's y grows upward).
+    @Test func onlyClicksBelowTheMenuBarRefold() {
+        let screen = CGRect(x: 0, y: 0, width: 1512, height: 982)
+        func below(_ y: CGFloat) -> Bool {
+            DividerController.isBelowMenuBar(CGPoint(x: 700, y: y), screenFrame: screen, menuBarHeight: 33)
+        }
+        #expect(!below(970))    // in the bar: ⌘-dragging an icon
+        #expect(!below(949))    // bar's bottom edge
+        #expect(below(948))     // just under it
+        #expect(below(10))      // near the Dock
+        // A second display to the right, with its own menu bar.
+        let second = CGRect(x: 1512, y: 0, width: 1920, height: 1080)
+        #expect(!DividerController.isBelowMenuBar(CGPoint(x: 2000, y: 1070), screenFrame: second, menuBarHeight: 24))
+        #expect(DividerController.isBelowMenuBar(CGPoint(x: 2000, y: 1000), screenFrame: second, menuBarHeight: 24))
+    }
 }

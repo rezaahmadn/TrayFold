@@ -1,7 +1,8 @@
 import AppKit
 
-/// Owns TrayFold's own menu bar item (the chevron): an icon plus a small menu with
-/// the permission state, the divider toggle and Quit. A later phase adds the tray popup.
+/// Owns TrayFold's own menu bar item (the chevron). A left-click opens the tray popup;
+/// a right-click or ⌃-click opens a small menu with the permission state, the divider
+/// toggle and Quit.
 @MainActor
 final class StatusBarController: NSObject, NSMenuDelegate {
     /// macOS remembers where the user ⌘-dragged an item with this name.
@@ -9,21 +10,31 @@ final class StatusBarController: NSObject, NSMenuDelegate {
     /// Shown under the divider toggle in smaller text.
     static let dividerHint = "⌘-drag icons left of the divider to hide them"
 
+    /// What a click on the chevron opens.
+    enum ClickAction: Equatable { case tray, menu }
+
     private let permission: AccessibilityPermission
     private let divider: DividerController
+    private let tray: TrayController
     private let statusItem: NSStatusItem
+    private let menu = NSMenu()
     private let statusLine = NSMenuItem(title: "", action: nil, keyEquivalent: "")
     private let allowItem = NSMenuItem(title: "Allow Accessibility Access…", action: nil, keyEquivalent: "")
     private let dividerItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
 
-    init(permission: AccessibilityPermission, divider: DividerController) {
+    init(permission: AccessibilityPermission, divider: DividerController, tray: TrayController) {
         self.permission = permission
         self.divider = divider
+        self.tray = tray
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         super.init()
         statusItem.autosaveName = Self.autosaveName
+        // Every click comes to `chevronClicked`, which picks the tray or the menu.
+        // (A permanently set `statusItem.menu` would open on every click.)
+        statusItem.button?.target = self
+        statusItem.button?.action = #selector(chevronClicked)
+        statusItem.button?.sendAction(on: [.leftMouseUp, .rightMouseUp])
 
-        let menu = NSMenu()
         menu.delegate = self
         statusLine.isEnabled = false
         allowItem.target = self
@@ -39,7 +50,6 @@ final class StatusBarController: NSObject, NSMenuDelegate {
         menu.addItem(.separator())
         // No target: the action travels up to NSApplication, which quits.
         menu.addItem(NSMenuItem(title: "Quit TrayFold", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
-        statusItem.menu = menu
 
         permission.onChange = { [weak self] _ in self?.update() }
         update()
@@ -57,6 +67,14 @@ final class StatusBarController: NSObject, NSMenuDelegate {
         isExpanded ? "Show Hidden Icons" : "Hide Icons"
     }
 
+    /// Left-click opens the tray; right-click or ⌃-click (the Mac's other right-click)
+    /// opens the menu. Without the Accessibility permission the tray would be empty,
+    /// so every click opens the menu, which has the button to allow it.
+    static func clickAction(for type: NSEvent.EventType, modifiers: NSEvent.ModifierFlags, granted: Bool) -> ClickAction {
+        let wantsMenu = type == .rightMouseUp || modifiers.contains(.control)
+        return granted && !wantsMenu ? .tray : .menu
+    }
+
     private func update() {
         let granted = permission.isGranted
         // SF Symbols are template images: macOS tints them black or white to match
@@ -70,10 +88,29 @@ final class StatusBarController: NSObject, NSMenuDelegate {
         dividerItem.title = Self.dividerTitle(isExpanded: divider.isExpanded)
     }
 
+    @objc private func chevronClicked(_ sender: NSStatusBarButton) {
+        guard let event = NSApp.currentEvent else { return }
+        permission.refresh()
+        switch Self.clickAction(for: event.type, modifiers: event.modifierFlags, granted: permission.isGranted) {
+        case .tray:
+            tray.toggle(relativeTo: sender)
+        case .menu:
+            tray.close()
+            // Attach the menu for this one click so macOS shows it in the usual place,
+            // then detach it in `menuDidClose` so the next left-click opens the tray.
+            statusItem.menu = menu
+            sender.performClick(nil)
+        }
+    }
+
     // Called just before the menu shows: the cheapest moment to re-check the permission.
     func menuWillOpen(_ menu: NSMenu) {
         permission.refresh()
         update()
+    }
+
+    func menuDidClose(_ menu: NSMenu) {
+        statusItem.menu = nil
     }
 
     @objc private func openSettings() {

@@ -2,7 +2,7 @@
 
 A Windows-style system tray for the macOS menu bar, built for MacBooks with a notch.
 
-> **Status: early development.** The divider works: icons you ⌘-drag to its left are folded away. The tray popup is not built yet. The product spec lives in [`.claude/PRPs/prds/trayfold.prd.md`](.claude/PRPs/prds/trayfold.prd.md).
+> **Status: early development.** The divider folds icons away and the chevron opens a popup listing them. Clicking an entry doesn't open its menu yet (next phase). The product spec lives in [`.claude/PRPs/prds/trayfold.prd.md`](.claude/PRPs/prds/trayfold.prd.md).
 
 ## The problem
 
@@ -40,8 +40,6 @@ Scripts/run.sh          # or: open TrayFold.xcodeproj, then Cmd+R
 
 On first launch, allow TrayFold in **System Settings → Privacy & Security → Accessibility**.
 
-To choose what to hide: click the TrayFold chevron (⌄) → **Show Hidden Icons**, ⌘-drag icons to the left of the thin divider line, then **Hide Icons**. If the chevron ever goes missing on a crowded bar, open TrayFold again (e.g. from Spotlight) to fold everything back.
-
 ### Keep the permission across rebuilds (optional, recommended for development)
 
 Default builds are ad-hoc signed, so macOS forgets the Accessibility permission every time you rebuild. Run once:
@@ -51,6 +49,13 @@ Scripts/setup-signing.sh
 ```
 
 It creates a self-signed "TrayFold Local Signing" certificate in your login keychain (macOS asks for your password to trust it) and a git-ignored `Config/Signing.local.xcconfig` that uses it.
+
+## Usage
+
+- **Left-click** the TrayFold chevron (⌄): a popup shows every icon you can't see right now, whether folded away, under the notch, or off-screen.
+- **Right-click** (or ⌃-click) the chevron: the menu, with **Show Hidden Icons** / **Hide Icons** and **Quit**.
+
+To choose what to hide: right-click ⌄ → **Show Hidden Icons**, ⌘-drag icons to the left of the thin divider line, then click anywhere below the menu bar (or choose **Hide Icons**) to fold them away again. If the chevron ever goes missing on a crowded bar, click anywhere below the menu bar, or open TrayFold again (e.g. from Spotlight).
 
 ## License
 
