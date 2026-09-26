@@ -53,11 +53,14 @@ final class TrayController {
         // Items may have moved or appeared since the last scan (~20 ms when warm).
         Task {
             await store.refresh()
+            liveIcons.forgetAll(except: store.items)
+            // The user may have closed the popup meanwhile: then there's nothing to redraw
+            // or capture for.
+            guard popover.isShown, let screen = NSScreen.screens.first else { return }
             let items = render()
             // Only items that are on-screen right now (under the notch, or all icons shown);
             // usually none, and then nothing is captured.
-            guard let screen = NSScreen.screens.first else { return }
-            if await liveIcons.capture(items, screen: screen.frame) { render() }
+            if await liveIcons.capture(items, screen: screen.frame), popover.isShown { render() }
         }
     }
 

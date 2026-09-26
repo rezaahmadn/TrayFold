@@ -38,6 +38,9 @@ final class LiveIcons {
     private let system: System
     /// The last image of each item, by `MenuBarItem.id`.
     private var cache: [String: NSImage] = [:]
+    /// Goes up on every switch on or off, so a capture that was running across a switch
+    /// can tell that its images are out of date.
+    private var generation = 0
 
     init(defaults: UserDefaults = .standard, system: System = .live) {
         self.defaults = defaults
@@ -55,6 +58,7 @@ final class LiveIcons {
 
     func setEnabled(_ enabled: Bool) {
         defaults.set(enabled, forKey: Self.defaultsKey)
+        generation += 1
         Self.logger.notice("Live icons turned \(enabled ? "on" : "off", privacy: .public)")
         if !enabled {
             cache = [:]
@@ -76,12 +80,22 @@ final class LiveIcons {
         let onScreen = found.filter { MenuBarLayout.isOnScreen($0.frame, screenFrame: screen) }
         guard !onScreen.isEmpty else { return false }
         let started = ContinuousClock.now
+        let generation = self.generation
         let images = await system.capture(onScreen.map(\.frame))
+        // Switched off (or off and on) while capturing: these images must not come back.
+        guard generation == self.generation else { return false }
         for (item, image) in zip(onScreen, images) {
             if let image { cache[item.id] = NSImage(cgImage: image, size: .zero) }
         }
         Self.logger.info("Captured \(images.compactMap { $0 }.count, privacy: .public) of \(onScreen.count, privacy: .public) in \(ContinuousClock.now - started, privacy: .public)")
         return images.contains { $0 != nil }
+    }
+
+    /// Forgets images of items that are gone. An item's id contains its app's process id,
+    /// so after an app quits or relaunches its old images would otherwise stay forever.
+    func forgetAll(except items: [MenuBarItem]) {
+        let ids = Set(items.map(\.id))
+        cache = cache.filter { ids.contains($0.key) }
     }
 
     // MARK: - Pure helpers (unit-tested without capturing anything)

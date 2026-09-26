@@ -49,10 +49,10 @@ struct LiveIconsTests {
     }
 
     /// A fresh, empty settings store per test, so the real TrayFold settings are never read.
-    func makeLiveIcons(_ fake: FakeSystem, enabled: Bool? = nil) -> LiveIcons {
+    func makeLiveIcons(_ fake: FakeSystem, enabled: Bool? = nil, system: LiveIcons.System? = nil) -> LiveIcons {
         let defaults = UserDefaults(suiteName: "LiveIconsTests.\(UUID().uuidString)")!
         if let enabled { defaults.set(enabled, forKey: LiveIcons.defaultsKey) }
-        return LiveIcons(defaults: defaults, system: fake.system())
+        return LiveIcons(defaults: defaults, system: system ?? fake.system())
     }
 
     let docker = TrayControllerTests.item("Docker", x: 974, width: 47)
@@ -144,6 +144,42 @@ struct LiveIconsTests {
         live.setEnabled(false)
         #expect(live.images.isEmpty)
         live.setEnabled(true)
+        #expect(live.images.isEmpty)
+    }
+
+    /// A capture still running when the user switches off (even off and on again) must not
+    /// bring its images back.
+    @Test func switchingOffDuringACaptureDropsItsImages() async {
+        let fake = FakeSystem()
+        // The capture waits here until the test lets it go.
+        let (release, releaser) = AsyncStream<Void>.makeStream()
+        let started = Mutex(false)
+        var system = fake.system()
+        let capture = system.capture
+        system.capture = { frames in
+            started.withLock { $0 = true }
+            for await _ in release { break }
+            return await capture(frames)
+        }
+        let live = makeLiveIcons(fake, enabled: true, system: system)
+        let running = Task { await live.capture([docker], screen: Self.screen) }
+        while !started.withLock({ $0 }) { await Task.yield() }
+        live.setEnabled(false)
+        live.setEnabled(true)
+        releaser.yield()
+        #expect(await running.value == false)
+        #expect(fake.snapshot.captures.count == 1)
+        #expect(live.images.isEmpty)
+    }
+
+    /// Ids contain the app's process id, so a quit or relaunched app's images must go.
+    @Test func forgetsImagesOfItemsThatAreGone() async {
+        let fake = FakeSystem()
+        let live = makeLiveIcons(fake, enabled: true)
+        _ = await live.capture([docker], screen: Self.screen)
+        live.forgetAll(except: [docker, folded])
+        #expect(Set(live.images.keys) == [docker.id])
+        live.forgetAll(except: [folded])
         #expect(live.images.isEmpty)
     }
 

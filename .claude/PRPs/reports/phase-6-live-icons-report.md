@@ -109,11 +109,18 @@ No change to `README.md`, the PRD, `project.yml` or `.github/` (Phase 7's files)
 > Right-click ⌄ → **Show Live Icons** makes the tray show each item's real menu bar image (Docker's status, a timer's digits) instead of its app icon. This is the only feature that needs **Screen Recording**; TrayFold asks for it only when you turn the option on, and never uses it while it's off.
 > macOS can only capture an icon while it's on the screen, so TrayFold captures an item when you open it from the tray (or when the tray opens while icons are shown) and remembers the image; until then you see the app icon. Each capture makes macOS show a small purple dot next to Control Center for a few seconds, and macOS may ask about once a month whether TrayFold may keep recording. Captured images stay in memory only and are never saved or sent anywhere.
 
+## Review fixes (PR #8 code review)
+- **MEDIUM: a capture running across a switch could bring images back.** `capture(_:screen:)` checked `isActive` before awaiting ScreenCaptureKit but wrote the results unconditionally, so switching off (or off and on) mid-capture refilled the cache with stale images. `setEnabled` now bumps a `generation` counter; a capture drops its results if the counter changed while it ran. Test `switchingOffDuringACaptureDropsItsImages` holds a capture open, switches off and on, releases it, and expects no image; it fails with the check removed (mutation-checked).
+- **MEDIUM: late redraws after the popup closed.** The tray-open task now also awaits captures, so it could redraw a popup the user had already closed. It now returns early unless the popup is still shown, and redraws after the capture only if it still is.
+- **MEDIUM: cache never pruned.** Item ids contain the app's process id, so images of quit or relaunched apps stayed forever. `forgetAll(except:)` drops ids not in the store's current items, called on every tray open after the rescan. Test `forgetsImagesOfItemsThatAreGone`.
+- LOW (geometry-only window match): already documented on `statusWindow(containing:among:)` ("position is the only link"); no change.
+- Tests: **74** (13 in `LiveIconsTests`), local and CI-like (`CODE_SIGN_IDENTITY=-`). App code: **990** code lines (+9 for the fixes; +134 for the phase). No runtime re-check: the fixes are internal, the toggle stays off and no Screen Recording prompt was triggered.
+
 ## Tests Written
 
 | Test File | Tests | Coverage |
 |---|---|---|
-| `TrayFoldTests/LiveIconsTests.swift` | 11 | Off by default; off ⇒ no permission check, request, position read or capture; turning on requests access only if needed; only on-screen items captured; nothing on-screen ⇒ no capture; failed capture ⇒ app icon / last image kept; revoked permission ⇒ app icons; turning off drops images; window matching with measured frames (Docker, Wi-Fi, folded item, none, narrowest wins); menu subtitles |
+| `TrayFoldTests/LiveIconsTests.swift` | 13 | Off by default; off ⇒ no permission check, request, position read or capture; turning on requests access only if needed; only on-screen items captured; nothing on-screen ⇒ no capture; failed capture ⇒ app icon / last image kept; revoked permission ⇒ app icons; turning off drops images; switching off mid-capture drops its images; images of vanished items forgotten; window matching with measured frames (Docker, Wi-Fi, folded item, none, narrowest wins); menu subtitles |
 
 ## Next Steps
 - [ ] Review the pull request (CI must be green)
